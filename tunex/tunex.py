@@ -15,7 +15,6 @@ class MongoDatabase():
     def __init__(self):
         self.client = MongoClient('localhost', 27017)
 
-
 if __name__ == "__main__":
     daemon = TunexDaemon('/tmp/tunex-daemon.pid')
     mongodb = MongoDatabase()
@@ -33,10 +32,10 @@ if __name__ == "__main__":
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
-            print '  status		Prints status information and metrics for cluster'
+            print '  status     Prints status information and metrics for cluster'
             print '  run        Creates a new AWS autoscaling group that runs the provided k8s deployment'
-            print '  remove		Removes an AWS autoscaling group'
-            print '  apply		Creates or replaces the deployment on a cluster'
+            print '  remove     Removes an AWS autoscaling group'
+            print '  apply      Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
             sys.exit(2)
@@ -67,6 +66,10 @@ if __name__ == "__main__":
                 print '"%s %s %s" requires at least 2 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Usage: %s %s %s CLUSTER DEPLOYMENT \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Creates or replaces the deployment on a cluster\n'
+            else:
+                print "Unknown command"
+                sys.exit(2)
+        sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
