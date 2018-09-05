@@ -11,5 +11,6 @@ clean-build:
 	find tunex/ -name '*.pyc' -exec rm --force {} +
 	find tunex/ -name '*.pyo' -exec rm --force {} +
 
-install:
+build:
+	cd /usr/src/ScaleX-tune/tunex/ && pyinstaller --onefile tunex.py
 	mv /usr/src/ScaleX-tune/tunex/dist/tunex /usr/bin/tunex
