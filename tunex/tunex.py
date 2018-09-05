@@ -70,7 +70,7 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            commandList
+            commandList.setupUser(sys.argv[1])
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
