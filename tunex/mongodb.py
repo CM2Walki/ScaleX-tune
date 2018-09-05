@@ -13,7 +13,7 @@ class MongoDatabase():
         collection = db['usersData']
         cursor = collection.find({"userInfo.username": username})
         if cursor.count() == 0:
-            return False
+            return None
         else:
             return cursor[0]["userInfo"]
 
