@@ -10,7 +10,6 @@ clean-build:
 	rm -rf tunex/dist/
 	find tunex/ -name '*.pyc' -exec rm --force {} +
 	find tunex/ -name '*.pyo' -exec rm --force {} +
-	name '*~' -exec rm --force  {}
 
 install:
 	mv /usr/src/ScaleX-tune/tunex/dist/tunex /usr/bin/tunex
