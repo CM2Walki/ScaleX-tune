@@ -2,9 +2,9 @@
 
 
 class Commands():
-    def __init__(self, mongodbORM, userStorage):
-        self.mongodbORM = mongodbORM
-        self.userStorage = userStorage
+    def __init__(self, mongodborm, userstorage):
+        self.mongodbORM = mongodborm
+        self.userStorage = userstorage
 
     def setupUser(self, username):
         result = self.mongodbORM.get_user_info_from_name(username)
@@ -14,3 +14,4 @@ class Commands():
             self.userStorage.set_awstoken(result["awstoken"])
             self.userStorage.set_awsregion(result["awsregion"])
             self.userStorage.set_awspubkeyname(result["awskeyname"])
+        # TODO: Reset context
