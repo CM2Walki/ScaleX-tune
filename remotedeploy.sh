@@ -15,5 +15,5 @@ ssh $REMOTE << EOF
   docker exec '$SCALEXCONTAINERNAME' bash -c 'if cd /usr/src/ScaleX-tune; then git fetch --all && git reset --hard origin/master; else cd /usr/src/ && git clone https://github.com/CM2Walki/ScaleX-tune; fi'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'cd /usr/src/ScaleX-tune && make init clean-build build'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'cd /usr/src/ScaleX-tune/tunex && tunex restart'
-  echo 'Deployment script done.\n'
+  printf 'Deployment script done.\n'
 EOF

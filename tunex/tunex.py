@@ -2,7 +2,7 @@
 
 import sys, time, boto3
 from daemon import Daemon
-from pymongo import MongoClient
+from mongodb import MongoDatabase
 
 
 class TunexDaemon(Daemon):
@@ -11,13 +11,9 @@ class TunexDaemon(Daemon):
             time.sleep(1)
 
 
-class MongoDatabase():
-    def __init__(self):
-        self.client = MongoClient('localhost', 27017)
-
 if __name__ == "__main__":
     daemon = TunexDaemon('/tmp/tunex-daemon.pid')
-    mongodb = MongoDatabase()
+    mongodbORM = MongoDatabase('localhost', 27017)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -69,6 +65,8 @@ if __name__ == "__main__":
             else:
                 print "Unknown command"
                 sys.exit(2)
+        elif 'setup' == sys.argv[1]:
+            print mongodbORM.getUserInfoFromName(sys.argv[2])
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
