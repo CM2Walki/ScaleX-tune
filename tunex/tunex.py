@@ -34,9 +34,9 @@ if __name__ == "__main__":
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
             print '  status		Prints status information and metrics for cluster'
-            print '  run	        Creates a new AWS autoscaling group that runs the provided k8s deployment'
+            print '  run        Creates a new AWS autoscaling group that runs the provided k8s deployment'
             print '  remove		Removes an AWS autoscaling group'
-            print '  change		Changes deployment running on AWS autoscaling group'
+            print '  apply		Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
             sys.exit(2)
