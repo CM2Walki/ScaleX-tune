@@ -14,4 +14,4 @@ class Commands():
             self.userStorage.set_awstoken(result["awstoken"])
             self.userStorage.awsregion(result["awsregion"])
             self.userStorage.awspubkeyname(result["awskeyname"])
-        print self.userStorage.set_awssecret(result["awssecret"])
+        print self.userStorage
