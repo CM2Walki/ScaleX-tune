@@ -6,10 +6,10 @@ update:
     git reset --hard origin/master
 
 clean-build:
-    rm -rf build/
-    rm -rf dist/
-    find . -name '*.pyc' -exec rm --force {} +
-    find . -name '*.pyo' -exec rm --force {} +
+    rm -rf tunex/build/
+    rm -rf tunex/dist/
+    find tunex/ -name '*.pyc' -exec rm --force {} +
+    find tunex/ -name '*.pyo' -exec rm --force {} +
     name '*~' -exec rm --force  {}
 
 install:
