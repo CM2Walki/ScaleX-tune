@@ -14,4 +14,4 @@ class MongoDatabase():
         if cursor.count() == 0:
             return 0
         else:
-            return cursor[0]["userInfo"]["username"]
+            return cursor[0]["userInfo"]
