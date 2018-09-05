@@ -3,13 +3,13 @@
 import sys, time
 from daemon import Daemon
 
-class MyDaemon(Daemon):
+class TuneDaemon(Daemon):
 	def run(self):
 		while True:
 			time.sleep(1)
 
 if __name__ == "__main__":
-	daemon = MyDaemon('/tmp/daemon-example.pid')
+	daemon = TuneDaemon('/tmp/tune-daemon.pid')
 	if len(sys.argv) == 2:
 		if 'start' == sys.argv[1]:
 			daemon.start()
