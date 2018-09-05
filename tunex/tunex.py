@@ -3,6 +3,8 @@
 import sys, time, boto3
 from daemon import Daemon
 from mongodb import MongoDatabase
+from storage import Storage
+from commands import Commands
 
 
 class TunexDaemon(Daemon):
@@ -14,6 +16,8 @@ class TunexDaemon(Daemon):
 if __name__ == "__main__":
     daemon = TunexDaemon('/tmp/tunex-daemon.pid')
     mongodbORM = MongoDatabase('localhost', 27017)
+    userStorage = Storage()
+    commandList = Commands(mongodbORM, userStorage)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -46,7 +50,7 @@ if __name__ == "__main__":
                 print '  --all      Displays all running clusters and their metrics'
             elif 'run' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Usage: %s %s %s [OPTIONS] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
+                print 'Usage: %s %s %s [OPTIONS] [DEPLOYMENT]\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Creates a new autoscaling cluster with the provided parameters on AWS\n'
                 print 'Options:'
                 print '  --name             Set a name for the new cluster'
@@ -66,7 +70,7 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            print mongodbORM.getUserInfoFromName(sys.argv[2])
+            commandList
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
