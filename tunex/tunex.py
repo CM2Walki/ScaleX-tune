@@ -9,15 +9,15 @@ from commands import Commands
 
 class TunexDaemon(Daemon):
     def run(self):
+        self.mongodbORM = MongoDatabase('localhost', 27017)
+        self.userStorage = Storage()
+        self.commandList = Commands(self.mongodbORM, self.userStorage)
         while True:
             time.sleep(1)
 
 
 if __name__ == "__main__":
     daemon = TunexDaemon('/tmp/tunex-daemon.pid')
-    mongodbORM = MongoDatabase('localhost', 27017)
-    userStorage = Storage()
-    commandList = Commands(mongodbORM, userStorage)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -40,6 +40,8 @@ if __name__ == "__main__":
             print '  apply      Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
+            sys.exit(2)
+        sys.exit(0)
     elif len(sys.argv) == 3:
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
@@ -68,15 +70,19 @@ if __name__ == "__main__":
                 print 'Creates or replaces the deployment on a cluster\n'
             else:
                 print "Unknown command"
+                sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            if userStorage.get_username() is None:
-                commandList.setupUser(sys.argv[2])
+            if daemon.userStorage.get_username() is None:
+                daemon.commandList.setupUser(sys.argv[2])
             else:
-                print 'tunex already setup for user %s\n' + userStorage.get_username()
+                print 'tunex already setup for user %s\n' + daemon.userStorage.get_username()
                 print 'Use --force to overwrite!'
+                sys.exit(2)
+        sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            commandList.setupUser(sys.argv[4])
+            daemon.commandList.setupUser(sys.argv[4])
+        sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
@@ -85,3 +91,4 @@ if __name__ == "__main__":
         print '  restart	Restarts the tunex-daemon'
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
+        sys.exit(2)
