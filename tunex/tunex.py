@@ -37,9 +37,9 @@ class TunexDaemon(Daemon):
 if __name__ == "__main__":
     socket_path = '/var/run/tunex.sock'
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
-    client = socket(AF_UNIX, SOCK_STREAM)
-    client.connect(socket_path)
     if len(sys.argv) == 2:
+        client = socket(AF_UNIX, SOCK_STREAM)
+        client.connect(socket_path)
         if 'start' == sys.argv[1]:
             daemon.start()
         elif 'stop' == sys.argv[1]:
@@ -66,6 +66,8 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 3:
+        client = socket(AF_UNIX, SOCK_STREAM)
+        client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -108,11 +110,15 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
+        client = socket(AF_UNIX, SOCK_STREAM)
+        client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
             print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
         client.close()
         sys.exit(0)
     else:
+        client = socket(AF_UNIX, SOCK_STREAM)
+        client.connect(socket_path)
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
         print '  start		Starts the tunex-daemon'
