@@ -11,9 +11,9 @@ from socket import *
 class TunexDaemon(Daemon):
     def __init__(self, pidfile, socket_path):
         Daemon.__init__(self, pidfile)
-        self.mongodbORM = MongoDatabase('localhost', 27017)
-        self.userStorage = Storage()
-        self.commandList = Commands(self.mongodbORM, self.userStorage)
+        self.mongodbORM = None
+        self.userStorage = None
+        self.commandList = None
         self.socket_path = socket_path
 
     def handle_client(self, conn, addr):
@@ -37,6 +37,9 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
+        self.mongodbORM = MongoDatabase('localhost', 27017)
+        self.userStorage = Storage()
+        self.commandList = Commands(self.mongodbORM, self.userStorage)
         try:
             os.unlink(self.socket_path)
         except OSError:
