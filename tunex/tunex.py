@@ -107,10 +107,10 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             client.send('userStorage.get_username()')
             data = client.recv(1024)
-            client.close()
             if data is None:
                 print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
+                print data
                 print 'tunex already setup for user %s\n'# + TunexDaemon.userStorage.get_username()
                 print 'Use --force to overwrite!'
                 client.close()
