@@ -21,8 +21,8 @@ class TunexDaemon(Daemon):
             print >> sys.stderr, 'connection from', addr
             while True:
                 data = conn.recv(1024)
-                if data and data == 'userStorage.get_username()':
-                    result = self.userStorage.get_username()
+                if data:
+                    result = exec str(data)
                     if result:
                         conn.sendall(result)
                     else:
@@ -110,9 +110,10 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             client.send('userStorage.get_username()')
             data = client.recv(2048)
-            if data == ':CODE:':
+            if not data == ':CODE:':
                 print data
-                print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
+                client.send('commandList.setupUser(%s)' % sys.argv[2])
+                data = client.recv(2048)
             else:
                 print data
                 print 'tunex already setup for user %s\n'# + TunexDaemon.userStorage.get_username()
