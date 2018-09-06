@@ -22,7 +22,8 @@ class TunexDaemon(Daemon):
             while True:
                 data = conn.recv(1024)
                 if data:
-                    result = ast.literal_eval(data)
+                    result = None
+                    exec 'result = %s\n' % str(data)
                     #exec result
                     if result:
                         conn.sendall(result)
