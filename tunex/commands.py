@@ -18,9 +18,11 @@ class Commands:
             self.userStorage.set_awstoken(result["awstoken"])
             self.userStorage.set_awsregion(result["awsregion"])
             self.userStorage.set_awspubkeyname(result["awskeyname"])
+            print self.userStorage.get_awssecret
+            print self.userStorage.get_awstoken
+            self.userContext = Context(self.userStorage.get_awssecret,
+                                       self.userStorage.get_awstoken)
+            print 'User setup successful detected X running clusters'
         else:
             print 'User setup failed! Username not found in ScaleX Database'
             sys.exit(2)
-        self.userContext = Context(self.userStorage.get_awstoken,
-                                   self.userStorage.get_awssecret)
-        print 'User setup successful detected X running clusters'
