@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            if userStorage.get_username() is not None:
+            if userStorage.get_username() is None:
                 commandList.setupUser(sys.argv[2])
             else:
                 print 'tunex already setup for user %s\n' + userStorage.get_username()
