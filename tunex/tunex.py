@@ -24,7 +24,7 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
-        server = socket(AF_UNIX, SOCK_STREAM)
+        server = socket(AF_UNIX)
         server.bind(self.socket_path)
         server.listen(1)
         while True:
@@ -35,9 +35,9 @@ class TunexDaemon(Daemon):
 
 
 if __name__ == "__main__":
-    socket_path = '/tmp/tunex.sock'
+    socket_path = '/var/run/tunex.sock'
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
-    client = socket(AF_UNIX, SOCK_STREAM)
+    client = socket(AF_UNIX)
     client.connect(socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
