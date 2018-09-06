@@ -15,8 +15,6 @@ class TunexDaemon(Daemon):
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         self.socket_path = socket_path
-        self.server = socket(AF_UNIX, SOCK_STREAM)
-        self.server.bind(self.socket_path)
 
     def handle_client(self, conn):
         with conn.makefile() as f:
@@ -26,7 +24,14 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
-        self.server.listen(5)
+        try:
+            os.unlink(self.socket_path)
+        except OSError:
+            if os.path.exists(self.socket_path):
+                raise
+        server = socket(AF_UNIX, SOCK_STREAM)
+        server.bind(self.socket_path)
+        server.listen(1)
         while True:
             conn, addr = self.server.accept()
             thread = threading.Thread(target=self.handle_client, args=[conn])
@@ -36,11 +41,6 @@ class TunexDaemon(Daemon):
 
 if __name__ == "__main__":
     socket_path = '/var/run/tunex.sock'
-    try:
-        os.unlink(socket_path)
-    except OSError:
-        if os.path.exists(socket_path):
-            raise
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
