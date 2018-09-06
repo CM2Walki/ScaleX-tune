@@ -19,9 +19,9 @@ class Commands:
                 self.userStorage.set_awstoken(result["awstoken"])
                 self.userStorage.set_awsregion(result["awsregion"])
                 self.userStorage.set_awspubkeyname(result["awskeyname"])
-                self.userContext = Context(self.userStorage.get_awssecret(),
-                                           self.userStorage.get_awstoken(),
-                                           self.userStorage.get_awsregion())
+                #self.userContext = Context(self.userStorage.get_awssecret(),
+                #                           self.userStorage.get_awstoken(),
+                #                           self.userStorage.get_awsregion())
                 print 'User setup successful detected X running clusters'
             else:
                 print 'User setup not complete in ScaleX Database'
