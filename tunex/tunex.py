@@ -77,6 +77,11 @@ if __name__ == "__main__":
             sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 3:
+        try:
+            os.unlink(self.socket_path)
+        except OSError:
+            if os.path.exists(self.socket_path):
+                raise
         client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
@@ -125,6 +130,11 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
+        try:
+            os.unlink(self.socket_path)
+        except OSError:
+            if os.path.exists(self.socket_path):
+                raise
         client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
