@@ -10,13 +10,13 @@ from socket import *
 
 class TunexDaemon(Daemon):
     def __init__(self, pidfile, socket_path):
+        Daemon.__init__(self, pidfile)
         self.mongodbORM = MongoDatabase('localhost', 27017)
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         self.socket_path = socket_path
-        self.server = socket(AF_UNIX)
+        self.server = socket(AF_UNIX, SOCK_STREAM)
         self.server.bind(self.socket_path)
-        Daemon.__init__(self, pidfile)
 
     def handle_client(self, conn):
         with conn.makefile() as f:
@@ -26,7 +26,7 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
-        self.server.listen(1)
+        self.server.listen(5)
         while True:
             conn, addr = self.server.accept()
             thread = threading.Thread(target=self.handle_client, args=[conn])
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 3:
-        client = socket(AF_UNIX)
+        client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
-        client = socket(AF_UNIX)
+        client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
             print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
