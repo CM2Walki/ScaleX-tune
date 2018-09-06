@@ -33,7 +33,7 @@ class TunexDaemon(Daemon):
         server.bind(self.socket_path)
         server.listen(1)
         while True:
-            conn, addr = self.server.accept()
+            conn, addr = server.accept()
             thread = threading.Thread(target=self.handle_client, args=[conn])
             thread.daemon = True
             thread.start()
