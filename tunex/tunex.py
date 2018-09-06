@@ -8,13 +8,18 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
-    test = "hi"
+    mongodbORM = None
+    userStorage = None
+    commandList = None
+
     def run(self):
-        mongodbORM = MongoDatabase('localhost', 27017)
-        userStorage = Storage()
-        commandList = Commands(mongodbORM, userStorage)
         while True:
-            print TunexDaemon.test
+            if TunexDaemon.mongodbORM is None:
+                TunexDaemon.mongodbORM = MongoDatabase('localhost', 27017)
+            if TunexDaemon.userStorage is None:
+                TunexDaemon.userStorage = Storage()
+            if TunexDaemon.commandList is None:
+                TunexDaemon.commandList = Commands(TunexDaemon.mongodbORM, TunexDaemon.userStorage)
             time.sleep(1)
 
 
@@ -74,17 +79,16 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            TunexDaemon.test = "hello"
-            if daemon.userStorage.get_username() is None:
-                daemon.commandList.setupUser(sys.argv[2])
+            if TunexDaemon.userStorage.get_username() is None:
+                TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
-                print 'tunex already setup for user %s\n' + daemon.userStorage.get_username()
+                print 'tunex already setup for user %s\n' + TunexDaemon.userStorage.get_username()
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            daemon.commandList.setupUser(sys.argv[4])
+            TunexDaemon.commandList.setupUser(sys.argv[4])
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
