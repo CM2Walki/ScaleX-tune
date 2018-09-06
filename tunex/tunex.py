@@ -18,7 +18,6 @@ class TunexDaemon(Daemon):
 
     def handle_client(self, conn, addr):
         try:
-            print >> sys.stderr, 'connection from', addr
             while True:
                 data = conn.recv(1024)
                 if data:
@@ -29,7 +28,6 @@ class TunexDaemon(Daemon):
                     else:
                         conn.send(':CODE:')
                 else:
-                    print >> sys.stderr, 'no data from', addr
                     break
         finally:
             # Clean up the connection
@@ -43,7 +41,7 @@ class TunexDaemon(Daemon):
                 raise
         server = socket(AF_UNIX, SOCK_STREAM)
         server.bind(self.socket_path)
-        server.listen(1)
+        server.listen(5)
         while True:
             conn, addr = server.accept()
             self.handle_client(conn, addr)
@@ -77,11 +75,6 @@ if __name__ == "__main__":
             sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 3:
-        try:
-            os.unlink(self.socket_path)
-        except OSError:
-            if os.path.exists(self.socket_path):
-                raise
         client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
@@ -130,11 +123,6 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
-        try:
-            os.unlink(self.socket_path)
-        except OSError:
-            if os.path.exists(self.socket_path):
-                raise
         client = socket(AF_UNIX, SOCK_STREAM)
         client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
