@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, time, threading
+import sys, os, time, threading
 from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
@@ -33,13 +33,14 @@ class TunexDaemon(Daemon):
             thread.daemon = True
             thread.start()
 
-    def stop(self):
-        self.server.close()
-        Daemon.stop()
-
 
 if __name__ == "__main__":
     socket_path = '/var/run/tunex.sock'
+    try:
+        os.unlink(socket_path)
+    except OSError:
+        if os.path.exists(socket_path):
+            raise
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
     client = socket(AF_UNIX)
     client.connect(socket_path)
