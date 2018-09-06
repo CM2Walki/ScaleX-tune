@@ -23,7 +23,7 @@ class TunexDaemon(Daemon):
                 data = conn.recv(1024)
                 if data and data == 'userStorage.get_username()':
                     result = self.userStorage.get_username()
-                    conn.send(result)
+                    conn.send('HEYYA')
                 else:
                     print >> sys.stderr, 'no data from', addr
                     break
