@@ -7,8 +7,7 @@ class Context:
     def __init__(self, awssecret, awstoken, awsregion):
         self.boto3 = boto3.client('ec2',
                                   aws_access_key_id=awstoken,
-                                  aws_secret_access_key=awssecret,
-                                  aws_default_region=awsregion)
+                                  aws_secret_access_key=awssecret)
         self.clusterlist = []
         self.build_context()
 
