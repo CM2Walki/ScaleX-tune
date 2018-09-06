@@ -42,8 +42,6 @@ if __name__ == "__main__":
         if os.path.exists(socket_path):
             raise
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
-    client = socket(AF_UNIX)
-    client.connect(socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -66,11 +64,11 @@ if __name__ == "__main__":
             print '  apply      Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
-            client.close()
             sys.exit(2)
-        client.close()
         sys.exit(0)
     elif len(sys.argv) == 3:
+        client = socket(AF_UNIX)
+        client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -113,6 +111,8 @@ if __name__ == "__main__":
         client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
+        client = socket(AF_UNIX)
+        client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
             print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
         client.close()
@@ -125,5 +125,4 @@ if __name__ == "__main__":
         print '  restart	Restarts the tunex-daemon'
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
-        client.close()
         sys.exit(2)
