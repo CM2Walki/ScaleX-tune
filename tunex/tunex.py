@@ -22,8 +22,8 @@ class TunexDaemon(Daemon):
                 data = conn.recv(1024)
                 if data:
                     result = None
-                    exec 'result = %s\n' % str(data) in locals()
-                    if result and str(result).count() != 0:
+                    exec '%s\n' % str(data) in locals()
+                    if result:
                         conn.sendall(result)
                     else:
                         conn.send(':CODE:')
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                 client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('self.userStorage.get_username()')
+            client.send('result = self.userStorage.get_username()')
             data = client.recv(2048)
             if data == ':CODE:':
                 print data
@@ -117,8 +117,7 @@ if __name__ == "__main__":
                 print data
                 client.close()
             else:
-                print data
-                print 'tunex already setup for user %s\n'# + TunexDaemon.userStorage.get_username()
+                print 'tunex already setup for user %s\n' % data
                 print 'Use --force to overwrite!'
                 client.close()
                 sys.exit(2)
