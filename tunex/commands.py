@@ -8,6 +8,7 @@ class Commands():
 
     def setupUser(self, username):
         result = self.mongodbORM.get_user_info_from_name(username)
+        print result
         if result is not None:
             self.userStorage.set_username(result["username"])
             self.userStorage.set_awssecret(result["awssecret"])
