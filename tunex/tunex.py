@@ -107,7 +107,7 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             client.send('userStorage.get_username()')
             data = client.recv(1024)
-            if data is None:
+            if data:
                 print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
                 print data
