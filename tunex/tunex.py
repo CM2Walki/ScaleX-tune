@@ -8,12 +8,13 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
-    mongodbORM = MongoDatabase('localhost', 27017)
-    userStorage = Storage()
-    commandList = Commands(mongodbORM, userStorage)
-
+    test = "hi"
     def run(self):
+        mongodbORM = MongoDatabase('localhost', 27017)
+        userStorage = Storage()
+        commandList = Commands(mongodbORM, userStorage)
         while True:
+            print TunexDaemon.test
             time.sleep(1)
 
 
@@ -73,6 +74,7 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
+            TunexDaemon.test = "hello"
             if daemon.userStorage.get_username() is None:
                 daemon.commandList.setupUser(sys.argv[2])
             else:
