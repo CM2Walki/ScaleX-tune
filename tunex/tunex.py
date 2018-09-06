@@ -8,12 +8,12 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
-    def __init__(self, pidfile, socket):
+    def __init__(self, pidfile, socket_path):
         Daemon.__init__(self, pidfile)
         self.mongodbORM = MongoDatabase('localhost', 27017)
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
-        self.socket = socket
+        self.socket_path = socket_path
 
     def handle_client(self, conn):
         with conn.makefile() as f:
@@ -25,7 +25,7 @@ class TunexDaemon(Daemon):
     def run(self):
         server = socket.socket()
         server.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM)
-        server.bind(self.socket)
+        server.bind(self.socket_path)
         server.listen(1)
         while True:
             conn, addr = server.accept()
@@ -35,10 +35,11 @@ class TunexDaemon(Daemon):
 
 
 if __name__ == "__main__":
-    socket = '/var/run/tunex.sock'
-    daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket)
+    socket_path = '/var/run/tunex.sock'
+    daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
     client = socket.socket()
-    client.setsockopt(client.AF_UNIX, client.SOCK_STREAM)
+    client.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM)
+    client.connect(socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
