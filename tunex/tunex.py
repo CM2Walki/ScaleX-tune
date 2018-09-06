@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, time
+import sys, time, socket, threading
 from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
@@ -8,23 +8,37 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
-    mongodbORM = None
-    userStorage = None
-    commandList = None
+    def __init__(self, pidfile, socket):
+        Daemon.__init__(self, pidfile)
+        self.mongodbORM = MongoDatabase('localhost', 27017)
+        self.userStorage = Storage()
+        self.commandList = Commands(self.mongodbORM, self.userStorage)
+        self.socket = socket
+
+    def handle_client(self, conn):
+        with conn.makefile() as f:
+            if f[0] == 'userStorage.get_username()':
+                result = self.userStorage.get_username()
+                conn.send(result)
+            conn.close()
 
     def run(self):
+        server = socket.socket()
+        server.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM)
+        server.bind(self.socket)
+        server.listen(1)
         while True:
-            if TunexDaemon.mongodbORM is None:
-                TunexDaemon.mongodbORM = MongoDatabase('localhost', 27017)
-            if TunexDaemon.userStorage is None:
-                TunexDaemon.userStorage = Storage()
-            if TunexDaemon.commandList is None:
-                TunexDaemon.commandList = Commands(TunexDaemon.mongodbORM, TunexDaemon.userStorage)
-            time.sleep(1)
+            conn, addr = server.accept()
+            thread = threading.Thread(target=self.handle_client, args=[conn])
+            thread.daemon = True
+            thread.start()
 
 
 if __name__ == "__main__":
-    daemon = TunexDaemon('/tmp/tunex-daemon.pid')
+    socket = '/var/run/tunex.sock'
+    daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket)
+    client = socket.socket()
+    client.setsockopt(client.AF_UNIX, client.SOCK_STREAM)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -47,7 +61,9 @@ if __name__ == "__main__":
             print '  apply      Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
+            client.close()
             sys.exit(2)
+        client.close()
         sys.exit(0)
     elif len(sys.argv) == 3:
         if 'cluster' == sys.argv[1]:
@@ -77,18 +93,24 @@ if __name__ == "__main__":
                 print 'Creates or replaces the deployment on a cluster\n'
             else:
                 print "Unknown command"
+                client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            if TunexDaemon.userStorage.get_username() is None:
-                TunexDaemon.commandList.setupUser(sys.argv[2])
+            client.send('userStorage.get_username()')
+            data = client.recv(1024)
+            if data is None:
+                print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
-                print 'tunex already setup for user %s\n' + TunexDaemon.userStorage.get_username()
+                print 'tunex already setup for user %s\n'# + TunexDaemon.userStorage.get_username()
                 print 'Use --force to overwrite!'
+                client.close()
                 sys.exit(2)
+        client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            TunexDaemon.commandList.setupUser(sys.argv[4])
+            print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
+        client.close()
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
@@ -98,4 +120,5 @@ if __name__ == "__main__":
         print '  restart	Restarts the tunex-daemon'
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
+        client.close()
         sys.exit(2)
