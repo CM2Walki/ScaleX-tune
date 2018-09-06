@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-import sys, time, socket, threading
+import sys, time, threading
 from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
 from commands import Commands
+from socket import *
 
 
 class TunexDaemon(Daemon):
@@ -23,8 +24,7 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
-        server = socket.socket()
-        server.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM, 1)
+        server = socket(AF_UNIX, SOCK_STREAM)
         server.bind(self.socket_path)
         server.listen(1)
         while True:
@@ -37,8 +37,7 @@ class TunexDaemon(Daemon):
 if __name__ == "__main__":
     socket_path = '/var/run/tunex.sock'
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
-    client = socket.socket()
-    client.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM, 1)
+    client = socket(AF_UNIX, SOCK_STREAM)
     client.connect(socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
