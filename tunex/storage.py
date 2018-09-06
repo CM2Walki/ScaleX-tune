@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 
-class Storage():
+class Storage:
     def __init__(self):
-        self.username = "NaN"
-        self.awssecret = ""
-        self.awstoken = ""
-        self.awsregion = ""
-        self.awspubkeyname = ""
+        self.username = None
+        self.awssecret = None
+        self.awstoken = None
+        self.awsregion = None
+        self.awspubkeyname = None
 
     def get_username(self):
         return self.username

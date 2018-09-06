@@ -1,15 +1,16 @@
 #!/usr/bin/env python
+
 from pymongo import MongoClient
 
 
-class MongoDatabase():
+class MongoDatabase:
     def __init__(self, host, port):
-        self.client = MongoClient(host, port)
+        self.mongoclient = MongoClient(host, port)
         self.host = host
         self.port = port
 
     def get_user_info_from_name(self, username):
-        db = self.client['dbUsersData']
+        db = self.mongoclient['dbUsersData']
         collection = db['usersData']
         cursor = collection.find({"userInfo.username": username})
         if cursor.count() == 0:

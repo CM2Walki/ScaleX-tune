@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, time, boto3
+import sys, time
 from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
@@ -28,7 +28,9 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             print '"%s %s" requires exactly 1 argument\n' % (sys.argv[0], sys.argv[1])
             print 'Usage: %s %s [USERNAME]\n' % (sys.argv[0], sys.argv[1])
-            print 'Fetch the AWS data from the ScaleX database for [USERNAME]'
+            print 'Fetch the AWS data from the ScaleX database for [USERNAME]\n'
+            print 'Options:'
+            print '  --force      Reinitialize tunex with provided user'
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
@@ -40,7 +42,7 @@ if __name__ == "__main__":
             print "Unknown command"
             sys.exit(2)
         sys.exit(0)
-    if len(sys.argv) == 3:
+    elif len(sys.argv) == 3:
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -70,8 +72,15 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            commandList.setupUser(sys.argv[2])
+            if userStorage.get_username() is not None:
+                commandList.setupUser(sys.argv[2])
+            else:
+                print 'tunex already setup for user %s\n' + userStorage.get_username()
+                print 'Use --force to overwrite!'
         sys.exit(0)
+    elif len(sys.argv) == 5:
+        if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
+            commandList.setupUser(sys.argv[4])
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
