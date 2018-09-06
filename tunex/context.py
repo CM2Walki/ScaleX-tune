@@ -8,7 +8,7 @@ class Context:
         self.boto3 = boto3.client('ec2',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret,
-                                  region=awsregion)
+                                  aws_default_region=awsregion)
         self.clusterlist = []
         self.build_context()
 
