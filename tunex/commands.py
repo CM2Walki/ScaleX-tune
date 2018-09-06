@@ -21,6 +21,6 @@ class Commands:
         else:
             print 'User setup failed! Username not found in ScaleX Database'
             sys.exit(2)
-        self.userContext = Context(self.userStorage.get_awssecret,
-                                   self.userStorage.get_awstoken)
+        self.userContext = Context(self.userStorage.get_awstoken,
+                                   self.userStorage.get_awssecret)
         print 'User setup successful detected X running clusters'
