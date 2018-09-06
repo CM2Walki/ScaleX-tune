@@ -16,11 +16,19 @@ class TunexDaemon(Daemon):
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         self.socket_path = socket_path
 
-    def handle_client(self, conn):
-        with conn.makefile() as f:
-            if f[0] == 'userStorage.get_username()':
-                result = self.userStorage.get_username()
-                conn.send(result)
+    def handle_client(self, conn, addr):
+        try:
+            print >> sys.stderr, 'connection from', addr
+            while True:
+                data = conn.recv(1024)
+                if data and data == 'userStorage.get_username()':
+                    result = self.userStorage.get_username()
+                    conn.send(result)
+                else:
+                    print >> sys.stderr, 'no data from', addr
+                    break
+        finally:
+            # Clean up the connection
             conn.close()
 
     def run(self):
@@ -34,9 +42,7 @@ class TunexDaemon(Daemon):
         server.listen(1)
         while True:
             conn, addr = server.accept()
-            thread = threading.Thread(target=self.handle_client, args=[conn])
-            thread.daemon = True
-            thread.start()
+            self.handle_client(conn, addr)
 
 
 if __name__ == "__main__":
