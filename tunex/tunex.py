@@ -111,7 +111,7 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             client.send('self.userStorage.get_username()')
             data = client.recv(2048)
-            if not data == ':CODE:':
+            if data == ':CODE:':
                 print data
                 print 'We are through!'
                 client.send('self.commandList.setupUser(%s)' % sys.argv[2])
