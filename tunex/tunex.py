@@ -119,6 +119,7 @@ if __name__ == "__main__":
                 print data
                 print 'We are through!'
                 client.send('self.commandList.setupUser("%s")' % sys.argv[2])
+                data = client.recv(2048)
                 print data
                 client.close()
             else:
