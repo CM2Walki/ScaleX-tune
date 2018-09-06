@@ -23,7 +23,7 @@ class TunexDaemon(Daemon):
                 if data:
                     result = None
                     try:
-                        exec 'result = %s\n' % str(data) in locals()
+                        exec '%s\n' % str(data) in locals()
                     except SyntaxError as err:
                         result = str(err)
                     if result:
@@ -110,13 +110,13 @@ if __name__ == "__main__":
                 client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('self.userStorage.get_username()')
+            #client.send('self.userStorage.get_username()')
+            client.send('self.commandList.setupUser(%s)' % sys.argv[2])
             data = client.recv(2048)
             if data == ':CODE:':
                 print data
                 print 'We are through!'
-                test = 'self.commandList.setupUser(%s)' % sys.argv[2]
-                client.send(test)
+                client.send('self.commandList.setupUser(%s)' % sys.argv[2])
                 data = client.recv(2048)
                 print data
                 client.close()
