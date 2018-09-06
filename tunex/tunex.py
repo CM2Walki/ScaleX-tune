@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import ast
 import sys, os, time, threading
 from daemon import Daemon
 from mongodb import MongoDatabase
@@ -22,8 +22,8 @@ class TunexDaemon(Daemon):
             while True:
                 data = conn.recv(1024)
                 if data:
-                    result = None
-                    exec 'result = %s\n' % data
+                    result = ast.literal_eval(data)
+                    #exec result
                     if result:
                         conn.sendall(result)
                     else:
