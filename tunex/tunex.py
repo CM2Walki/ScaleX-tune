@@ -23,7 +23,7 @@ class TunexDaemon(Daemon):
                 data = conn.recv(1024)
                 if data:
                     result = None
-                    exec 'result = %s\n' % str(data)
+                    exec 'result = %s\n' % str(data) in locals()
                     if result:
                         conn.sendall(result)
                     else:
