@@ -14,6 +14,8 @@ class TunexDaemon(Daemon):
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         self.socket_path = socket_path
+        self.server = socket(AF_UNIX)
+        self.server.bind(self.socket_path)
         Daemon.__init__(self, pidfile)
 
     def handle_client(self, conn):
@@ -24,21 +26,23 @@ class TunexDaemon(Daemon):
             conn.close()
 
     def run(self):
-        server = socket(AF_UNIX)
-        server.bind(self.socket_path)
-        server.listen(1)
+        self.server.listen(1)
         while True:
-            conn, addr = server.accept()
+            conn, addr = self.server.accept()
             thread = threading.Thread(target=self.handle_client, args=[conn])
             thread.daemon = True
             thread.start()
 
+    def stop(self):
+        self.server.close()
+        Daemon.stop()
+
 
 if __name__ == "__main__":
-    socket_path = '/tmp/tunex.sock'
+    socket_path = '/var/run/tunex.sock'
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
-    #client = socket(AF_UNIX)
-    #client.connect(socket_path)
+    client = socket(AF_UNIX)
+    client.connect(socket_path)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -61,9 +65,9 @@ if __name__ == "__main__":
             print '  apply      Creates or replaces the deployment on a cluster'
         else:
             print "Unknown command"
-            #client.close()
+            client.close()
             sys.exit(2)
-        #client.close()
+        client.close()
         sys.exit(0)
     elif len(sys.argv) == 3:
         if 'cluster' == sys.argv[1]:
@@ -93,24 +97,24 @@ if __name__ == "__main__":
                 print 'Creates or replaces the deployment on a cluster\n'
             else:
                 print "Unknown command"
-                #client.close()
+                client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            #client.send('userStorage.get_username()')
-            data = None #client.recv(1024)
+            client.send('userStorage.get_username()')
+            data = client.recv(1024)
             if data is None:
                 print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
                 print 'tunex already setup for user %s\n'# + TunexDaemon.userStorage.get_username()
                 print 'Use --force to overwrite!'
-                #client.close()
+                client.close()
                 sys.exit(2)
-        #client.close()
+        client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
             print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
-        #client.close()
+        client.close()
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
@@ -120,5 +124,5 @@ if __name__ == "__main__":
         print '  restart	Restarts the tunex-daemon'
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
-        #client.close()
+        client.close()
         sys.exit(2)
