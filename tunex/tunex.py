@@ -22,7 +22,10 @@ class TunexDaemon(Daemon):
                 data = conn.recv(1024)
                 if data:
                     result = None
-                    exec '%s\n' % str(data) in locals()
+                    try:
+                        exec 'result = %s\n' % str(data) in locals()
+                    except SyntaxError as err:
+                        result = str(err)
                     if result:
                         conn.sendall(result)
                     else:
@@ -107,7 +110,7 @@ if __name__ == "__main__":
                 client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('result = self.userStorage.get_username()')
+            client.send('self.userStorage.get_username()')
             data = client.recv(2048)
             if data == ':CODE:':
                 print data
