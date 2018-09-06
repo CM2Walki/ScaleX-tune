@@ -35,7 +35,7 @@ class TunexDaemon(Daemon):
 
 
 if __name__ == "__main__":
-    socket_path = '/tmp/tunex.sock'
+    socket_path = '/var/run/tunex.sock'
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
     client = socket.socket()
     client.setsockopt(socket.AF_UNIX, socket.SOCK_STREAM, 1)
