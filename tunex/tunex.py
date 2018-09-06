@@ -8,10 +8,16 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
-    def run(self):
+    def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
+        self.stdin = stdin
+        self.stdout = stdout
+        self.stderr = stderr
+        self.pidfile = pidfile
         self.mongodbORM = MongoDatabase('localhost', 27017)
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
+
+    def run(self):
         while True:
             time.sleep(1)
 
