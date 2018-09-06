@@ -14,4 +14,4 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
-
+        self.explode = True
