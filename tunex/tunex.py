@@ -23,7 +23,7 @@ class TunexDaemon(Daemon):
                 if data:
                     result = None
                     exec 'result = %s\n' % str(data) in locals()
-                    if result:
+                    if result and str(result).count() != 0:
                         conn.sendall(result)
                     else:
                         conn.send(':CODE:')
@@ -41,7 +41,7 @@ class TunexDaemon(Daemon):
                 raise
         server = socket(AF_UNIX, SOCK_STREAM)
         server.bind(self.socket_path)
-        server.listen(5)
+        server.listen(1)
         while True:
             conn, addr = server.accept()
             self.handle_client(conn, addr)
