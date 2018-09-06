@@ -8,10 +8,11 @@ from commands import Commands
 
 
 class TunexDaemon(Daemon):
+    mongodbORM = MongoDatabase('localhost', 27017)
+    userStorage = Storage()
+    commandList = Commands(mongodbORM, userStorage)
+
     def run(self):
-        self.mongodbORM = MongoDatabase('localhost', 27017)
-        self.userStorage = Storage()
-        self.commandList = Commands(self.mongodbORM, self.userStorage)
         while True:
             time.sleep(1)
 
