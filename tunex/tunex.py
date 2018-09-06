@@ -23,7 +23,10 @@ class TunexDaemon(Daemon):
                 data = conn.recv(1024)
                 if data and data == 'userStorage.get_username()':
                     result = self.userStorage.get_username()
-                    conn.sendall('CODE:%s', result)
+                    if result:
+                        conn.sendall(result)
+                    else:
+                        conn.send(':CODE:')
                 else:
                     print >> sys.stderr, 'no data from', addr
                     break
@@ -107,7 +110,7 @@ if __name__ == "__main__":
         elif 'setup' == sys.argv[1]:
             client.send('userStorage.get_username()')
             data = client.recv(2048)
-            if data == 'CODE:':
+            if data == ':CODE:':
                 print data
                 print 'Do things' #TunexDaemon.commandList.setupUser(sys.argv[2])
             else:
