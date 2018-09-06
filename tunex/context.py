@@ -4,7 +4,7 @@ import boto3
 
 
 class Context:
-    def __init__(self, awssecret, awstoken, awsregion):
+    def __init__(self, awssecret, awstoken):
         self.boto3 = boto3.client('ec2',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret)
