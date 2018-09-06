@@ -11,9 +11,12 @@ from socket import *
 class TunexDaemon(Daemon):
     def __init__(self, pidfile, socket_path):
         Daemon.__init__(self, pidfile)
+        self.mongodbORM = MongoDatabase('localhost', 27017)
+        self.userStorage = Storage()
+        self.commandList = Commands(self.mongodbORM, self.userStorage)
         self.socket_path = socket_path
 
-    def handle_client(self, conn, addr, mongodbORM, userStorage, commandList):
+    def handle_client(self, conn, addr):
         try:
             while True:
                 data = conn.recv(1024)
@@ -42,12 +45,9 @@ class TunexDaemon(Daemon):
         server = socket(AF_UNIX, SOCK_STREAM)
         server.bind(self.socket_path)
         server.listen(1)
-        mongodbORM = MongoDatabase('localhost', 27017)
-        userStorage = Storage()
-        commandList = Commands(mongodbORM, userStorage)
         while True:
             conn, addr = server.accept()
-            self.handle_client(conn, addr, mongodbORM, userStorage, commandList)
+            self.handle_client(conn, addr)
 
 
 if __name__ == "__main__":
@@ -110,12 +110,12 @@ if __name__ == "__main__":
                 client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('userStorage.get_username()')
+            client.send('self.userStorage.get_username()')
             data = client.recv(2048)
             if data == ':CODE:':
                 print data
                 print 'We are through!'
-                client.send('commandList.setupUser(%s)' % sys.argv[2])
+                client.send('self.commandList.setupUser(%s)' % sys.argv[2])
                 data = client.recv(2048)
                 print data
                 client.close()

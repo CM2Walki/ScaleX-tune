@@ -7,7 +7,7 @@ from signal import SIGTERM
 class Daemon:
     """Taken from: http://web.archive.org/web/20131017130434/http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/"""
 
-    def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
+    def __init__(self, pidfile, stdin='/dev/null', stdout='/var/logs/tunex.log', stderr='/var/logs/tunex.log'):
         self.stdin = stdin
         self.stdout = stdout
         self.stderr = stderr
