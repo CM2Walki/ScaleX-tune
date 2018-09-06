@@ -109,11 +109,11 @@ if __name__ == "__main__":
                 client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('userStorage.get_username()')
+            client.send('self.userStorage.get_username()')
             data = client.recv(2048)
             if not data == ':CODE:':
                 print data
-                client.send('commandList.setupUser(%s)' % sys.argv[2])
+                client.send('self.commandList.setupUser(%s)' % sys.argv[2])
                 data = client.recv(2048)
             else:
                 print data
