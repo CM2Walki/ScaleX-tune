@@ -15,9 +15,11 @@ gevent.monkey.patch_all()
 
 
 class APIView(FlaskView):
+    route_prefix = '/v1/'
+
     @route('/')
     def index(self):
-        return "Test just a test"
+        return "Test just a test\n"
 
 
 class TunexDaemon(Daemon):
