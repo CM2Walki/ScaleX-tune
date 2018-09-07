@@ -30,6 +30,7 @@ class DaemonCommands:
 
     def get_active_user(self):
         result = self.userStorage.get_username()
+        print result
         if result:
             return result
         else:
