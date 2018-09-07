@@ -8,7 +8,7 @@ from mongodb import MongoDatabase
 from storage import Storage
 from commands import Commands
 from flask import Flask, Response
-from flask.ext.classy import FlaskView
+from flask_classy import FlaskView
 
 
 gevent.monkey.patch_all()
