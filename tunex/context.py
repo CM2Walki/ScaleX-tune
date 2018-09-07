@@ -19,4 +19,4 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
-        return self.autoscaling.describe_auto_scaling_groups()
+        return self.autoscaling.describe_auto_scaling_groups()['AutoScalingGroups']
