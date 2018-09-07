@@ -27,8 +27,9 @@ class Context:
             out = []
             for s in grouplist:
                 #str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
-                if s['AutoScalingGroupName']:
-                    out.append(s)
+                for key, value in s:
+                    if key['AutoScalingGroupName']:
+                        out.append(s)
             return grouplist
         else:
             return []
