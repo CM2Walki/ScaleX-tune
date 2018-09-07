@@ -41,5 +41,3 @@ class TunexDaemon(Daemon):
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         http_server = WSGIServer((self.host, self.port), self.app)
         http_server.serve_forever()
-        while True:
-            time.sleep(1)
