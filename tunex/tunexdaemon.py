@@ -14,15 +14,13 @@ from flask_classy import FlaskView, route
 
 gevent.monkey.patch_all()
 
+mongodbORM = MongoDatabase('localhost', 27017)
+userStorage = Storage()
+commandList = DaemonCommands(mongodbORM, userStorage)
+
 
 class V1View(FlaskView):
     route_prefix = '/api/'
-
-    def __init__(self):
-        FlaskView.__init__(self)
-        self.mongodbORM = MongoDatabase('localhost', 27017)
-        self.userStorage = Storage()
-        self.commandList = DaemonCommands(self.mongodbORM, self.userStorage)
 
     @route('/')
     def index(self):
@@ -30,12 +28,12 @@ class V1View(FlaskView):
 
     @route('/get_active_user')
     def get_username(self):
-        return self.commandList.get_active_user()
+        return commandList.get_active_user()
 
     @route('/setup_user')
     def setup_user(self):
         username = str(request.args.get('username'))
-        return self.commandList.setup_user(username)
+        return commandList.setup_user(username)
 
 
 class TunexDaemon(Daemon):
