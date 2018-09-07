@@ -81,10 +81,10 @@ if __name__ == "__main__":
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)
-    elif len(sys.argv) == 5:
-        if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            print 'Setting up %s' % sys.argv[4]
-            response = tunexclient.setup_user(sys.argv[4])
+    elif len(sys.argv) == 4:
+        if 'setup' == sys.argv[1] and '--force' == sys.argv[2]:
+            print 'Setting up %s' % sys.argv[3]
+            response = tunexclient.setup_user(sys.argv[3])
             print response
         sys.exit(0)
     else:
