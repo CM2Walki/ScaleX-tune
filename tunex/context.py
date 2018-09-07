@@ -22,11 +22,12 @@ class Context:
         # Get all auto scaling groups
         reponse = self.autoscaling.describe_auto_scaling_groups()
         if int(reponse['ResponseMetadata']['HTTPStatusCode']) == 200:
+            # We received something
             grouplist = list(reponse['AutoScalingGroups'])
-            out = []
-            for s in grouplist:
-                if str.startswith(str(s), 'tunex-'):
-                    out.append(s)
-            return out
+            #out = []
+            #for s in grouplist:
+            #    if str.startswith(str(s), 'tunex-'):
+            #        out.append(s)
+            return grouplist
         else:
             return []
