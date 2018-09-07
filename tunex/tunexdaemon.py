@@ -3,13 +3,15 @@
 import gevent
 import gevent.monkey
 from gevent.pywsgi import WSGIServer
-gevent.monkey.patch_all()
-
 from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
 from commands import Commands
 from flask import Flask, Response
+
+
+gevent.monkey.patch_all()
+
 
 class TunexDaemon(Daemon):
     app = None
@@ -27,7 +29,8 @@ class TunexDaemon(Daemon):
         self.mongodbORM = MongoDatabase('localhost', 27017)
         self.userStorage = Storage()
         self.commandList = Commands(self.mongodbORM, self.userStorage)
-        self.app.run(self.host, self.port, debug=True)
+        http_server = WSGIServer((self.host, self.port), self.app)
+        http_server.serve_forever()
 
     @app.route('/')
     def users(self):
