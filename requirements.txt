@@ -3,4 +3,4 @@ boto3
 pyinstaller
 Flask
 greenlet
-gevent
+gevent==1.2.2
