@@ -29,7 +29,7 @@ class Context:
                 #str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
                 for key, value in s:
                     if key['AutoScalingGroupName']:
-                        out.append(s)
+                        out.append(value)
             return grouplist
         else:
             return []
