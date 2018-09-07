@@ -25,7 +25,7 @@ class Context:
             grouplist = list(reponse['AutoScalingGroups'])
             out = []
             for s in grouplist:
-                if str.startswith(s, 'tunex-'):
+                if str.startswith(str(s), 'tunex-'):
                     out.append(s)
             return out
         else:
