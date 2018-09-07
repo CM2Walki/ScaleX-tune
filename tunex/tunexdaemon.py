@@ -14,8 +14,8 @@ from flask_classy import FlaskView, route
 gevent.monkey.patch_all()
 
 
-class APIView(FlaskView):
-    route_prefix = '/v1/'
+class v1View(FlaskView):
+    route_prefix = '/api/'
 
     @route('/')
     def index(self):
@@ -33,7 +33,7 @@ class TunexDaemon(Daemon):
         self.host = host
         self.port = port
         self.app = Flask(name)
-        APIView.register(self.app)
+        v1View.register(self.app)
 
     def run(self):
         self.mongodbORM = MongoDatabase('localhost', 27017)
