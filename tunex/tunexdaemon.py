@@ -32,6 +32,10 @@ class V1View(FlaskView):
     def get_username(self):
         return self.commandList.get_active_user()
 
+    @route('/setup_user')
+    def setup_user(self, username):
+        return self.commandList.setup_user(str(username))
+
 
 class TunexDaemon(Daemon):
     app = None

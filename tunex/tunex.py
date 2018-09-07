@@ -72,9 +72,9 @@ if __name__ == "__main__":
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
             response = tunexclient.get_active_user()
-            print response
-            if response == '':
-                print 'We are through!'
+            if not bool(response):
+                print 'No active user detected! Setting up %s' % sys.argv[2]
+                response = tunexclient.setup_user(sys.argv[2])
             else:
                 print 'tunex already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
+            print 'Do Things'  # TunexDaemon.commandList.setupUser(sys.argv[4])
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]

@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 
-import requests
+import requests, sys
 
 
 class TunexClient:
-    def __init__(self, p_alias, p_port, p_api):
-        self.alias = p_alias
-        self.port = p_port
-        self.api = p_api
-        self.url = 'http://%s:%s/%s' % (p_alias, p_port, p_api)
+    def __init__(self, alias, port, api):
+        self.alias = alias
+        self.port = port
+        self.api = api
+        self.url = 'http://%s:%s/%s' % (alias, port, api)
 
-    def setup_hostfile(self):
+    @staticmethod
+    def setup_hostfile():
         with open("/etc/hosts", "r+") as f:
             for line in f:
                 if '127.0.0.1	tunex' in line:
@@ -18,5 +19,21 @@ class TunexClient:
             else:
                 file.write('127.0.0.1	tunex')
 
+    def build_request(self, query):
+        return '%s%s' % (self.url, query)
+
     def get_active_user(self):
-        return requests.get('%s%s' % (self.url, 'get_active_user')).text
+        response = requests.get(self.build_request('get_active_user'))
+        if response.status_code == 200:
+            return response.text
+        else:
+            print 'Daemon encountered an error (Code: %s)' % response.status_code
+            sys.exit(2)
+
+    def setup_user(self, username):
+        response = requests.get(self.build_request('setup_user'), params={'username': str(username)})
+        if response.status_code == 200:
+            return response.text
+        else:
+            print 'Daemon encountered an error (Code: %s)' % response.status_code
+            sys.exit(2)
