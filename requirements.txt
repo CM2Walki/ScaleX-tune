@@ -1,3 +1,6 @@
 pymongo
 boto3
 pyinstaller
+Flask
+greenlet
+gevent

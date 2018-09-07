@@ -1,61 +1,12 @@
 #!/usr/bin/env python
-import ast
-import sys, os, time, threading
-from daemon import Daemon
-from mongodb import MongoDatabase
-from storage import Storage
-from commands import Commands
-from socket import *
 
-
-class TunexDaemon(Daemon):
-    def __init__(self, pidfile, socket_path):
-        Daemon.__init__(self, pidfile)
-        self.mongodbORM = None
-        self.userStorage = None
-        self.commandList = None
-        self.socket_path = socket_path
-
-    def handle_client(self, conn, addr):
-        try:
-            while True:
-                data = conn.recv(1024)
-                if data:
-                    result = None
-                    try:
-                        exec 'result = %s\n' % str(data) in locals()
-                    except SyntaxError as err:
-                        result = str(err)
-                    if result:
-                        conn.sendall(result)
-                    else:
-                        conn.send(':CODE:')
-                else:
-                    break
-        finally:
-            # Clean up the connection
-            conn.close()
-
-    def run(self):
-        self.mongodbORM = MongoDatabase('localhost', 27017)
-        self.userStorage = Storage()
-        self.commandList = Commands(self.mongodbORM, self.userStorage)
-        try:
-            os.unlink(self.socket_path)
-        except OSError:
-            if os.path.exists(self.socket_path):
-                raise
-        server = socket(AF_UNIX, SOCK_STREAM)
-        server.bind(self.socket_path)
-        server.listen(1)
-        while True:
-            conn, addr = server.accept()
-            self.handle_client(conn, addr)
-
+import sys
+from tunexdaemon import TunexDaemon
 
 if __name__ == "__main__":
-    socket_path = '/var/run/tunex.sock'
-    daemon = TunexDaemon('/tmp/tunex-daemon.pid', socket_path)
+    host = 'localhost'
+    port = '8081'
+    daemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
@@ -81,8 +32,6 @@ if __name__ == "__main__":
             sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 3:
-        client = socket(AF_UNIX, SOCK_STREAM)
-        client.connect(socket_path)
         if 'cluster' == sys.argv[1]:
             if 'status' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -110,31 +59,19 @@ if __name__ == "__main__":
                 print 'Creates or replaces the deployment on a cluster\n'
             else:
                 print "Unknown command"
-                client.close()
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            client.send('self.userStorage.get_username()')
-            data = client.recv(2048)
+            data = ':CODE:'
             if data == ':CODE:':
-                print data
                 print 'We are through!'
-                client.send('self.commandList.setupUser("%s")' % sys.argv[2])
-                data = client.recv(2048)
-                print data
-                client.close()
             else:
                 print 'tunex already setup for user %s\n' % data
                 print 'Use --force to overwrite!'
-                client.close()
                 sys.exit(2)
-        client.close()
         sys.exit(0)
     elif len(sys.argv) == 5:
-        client = socket(AF_UNIX, SOCK_STREAM)
-        client.connect(socket_path)
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
             print 'Do Things' #TunexDaemon.commandList.setupUser(sys.argv[4])
-        client.close()
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
