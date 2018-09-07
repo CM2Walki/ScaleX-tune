@@ -12,7 +12,8 @@ class Context:
         self.ec2 = self.session.client('ec2',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret,
-                                  region_name=awsregion)
+                                  region_name=awsregion,
+                                  use_ssl=False)
         self.clusterlist = []
 
     # Retrieve active clusters created by tunex in the past
