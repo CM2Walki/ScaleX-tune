@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-import time
 import gevent.monkey
 from gevent.pywsgi import WSGIServer
 from daemon import Daemon
@@ -49,5 +48,5 @@ class TunexDaemon(Daemon):
     def run(self):
         self.app = Flask(self.name)
         V1View.register(self.app)
-        http_server = WSGIServer((self.host, self.port), self.app)
+        http_server = WSGIServer((self.host, self.port), self.app, log='/var/log/tunex.log', error_log='/var/log/tunex.log')
         http_server.serve_forever()
