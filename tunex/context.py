@@ -9,7 +9,8 @@ class Context:
         # Hack for mounting boto3 into a binary
         # correlating to https://github.com/boto/boto3/issues/275
         self.session._loader.search_paths.append('/usr/local/lib/python2.7/dist-packages/botocore/data')
-        self.ec2 = self.session.client('ec2',
+        # TODO: Figure out why SSL is breaking
+        self.autoscaling = self.session.client('autoscaling',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret,
                                   region_name=awsregion,
@@ -18,4 +19,4 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
-        return self.ec2.describe_instances()
+        return self.autoscaling.describe_auto_scaling_groups()
