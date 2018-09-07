@@ -19,4 +19,4 @@ class TunexClient:
                 file.write('127.0.0.1	tunex')
 
     def get_active_user(self):
-        return requests.get('%s%s' % (self.url, 'get_active_user'))
+        return requests.get('%s%s' % (self.url, 'get_active_user')).text
