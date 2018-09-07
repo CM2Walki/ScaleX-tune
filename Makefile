@@ -10,6 +10,7 @@ clean-build:
 	rm -rf tunex/dist/
 	find tunex/ -name '*.pyc' -exec rm --force {} +
 	find tunex/ -name '*.pyo' -exec rm --force {} +
+	rm /var/log/tunex.log
 
 build:
 	cd /usr/src/ScaleX-tune/tunex/ && pyinstaller --onefile tunex.py

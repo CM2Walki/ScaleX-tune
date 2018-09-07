@@ -21,6 +21,7 @@ if __name__ == "__main__":
     host = 'localhost'
     port = 8081
     tunex = Tunex(alias)
+    tunex.setup_hostfile()
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
