@@ -8,9 +8,15 @@ from mongodb import MongoDatabase
 from storage import Storage
 from commands import Commands
 from flask import Flask, Response
+from flask.ext.classy import FlaskView
 
 
 gevent.monkey.patch_all()
+
+
+class DaemonView(FlaskView):
+    def index(self):
+        return "Test just a test"
 
 
 class TunexDaemon(Daemon):
@@ -24,6 +30,7 @@ class TunexDaemon(Daemon):
         self.host = host
         self.port = port
         self.app = Flask(name)
+        DaemonView.register(self.app)
 
     def run(self):
         self.mongodbORM = MongoDatabase('localhost', 27017)
@@ -31,7 +38,3 @@ class TunexDaemon(Daemon):
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         http_server = WSGIServer((self.host, self.port), self.app)
         http_server.serve_forever()
-
-    @app.route('/')
-    def users(self):
-        return "Test"
