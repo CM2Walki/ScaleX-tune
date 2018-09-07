@@ -11,19 +11,24 @@ class DaemonCommands:
         self.userContext = None
 
     def setup_user(self, username):
+        # Try to find the user in the ScaleX database
         result = self.mongodbORM.get_user_info_from_name(username)
         if result is not None:
+            # Check if we have the fields we need
             if result["username"] and result["awssecret"] and result["awstoken"] and result["awsregion"] and result["awskeyname"]:
+                # Setup user
                 self.userStorage.set_username(result["username"])
                 self.userStorage.set_awssecret(result["awssecret"])
                 self.userStorage.set_awstoken(result["awstoken"])
                 self.userStorage.set_awsregion(result["awsregion"])
                 self.userStorage.set_awspubkeyname(result["awskeyname"])
+                # Setup AWS connection and available resources
                 self.userContext = Context(self.userStorage.get_awssecret(),
                                            self.userStorage.get_awstoken(),
                                            self.userStorage.get_awsregion())
+                # Retrieve running clusters
                 response = self.userContext.build_context()
-                return 'User setup successful! Detected %s running tunex auto scaling clusters' % len(response)
+                return 'User setup successful! Detected %s running tunex auto scaling cluster(s)' % len(response)
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \
                        'awssecret, awstoken, awsregion and awskeyname are setup for user %s' % username

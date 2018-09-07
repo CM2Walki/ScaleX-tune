@@ -10,24 +10,26 @@ class Context:
         # correlating to https://github.com/boto/boto3/issues/275
         self.session._loader.search_paths.append('/usr/local/lib/python2.7/dist-packages/botocore/data')
         # TODO: Figure out why SSL is breaking
-        self.autoscaling = self.session.client('autoscaling',
+        self.auto_scaling = self.session.client('autoscaling',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret,
                                   region_name=awsregion,
                                   use_ssl=False)
-        self.clusterlist = []
+        self.cluster_list = []
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
         # Get all auto scaling groups
-        reponse = self.autoscaling.describe_auto_scaling_groups()
+        reponse = self.auto_scaling.describe_auto_scaling_groups()
         if int(reponse['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
-            grouplist = list(reponse['AutoScalingGroups'])
+            group_list = list(reponse['AutoScalingGroups'])
             out = []
-            for s in grouplist:
+            # Find tunex clusters that might be running
+            for s in group_list:
                 if str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
                     out.append(s['AutoScalingGroupName'])
+                    self.cluster_list.append(s)
             return out
         else:
             return []
