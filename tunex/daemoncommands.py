@@ -31,4 +31,8 @@ class DaemonCommands:
             sys.exit(2)
 
     def get_active_user(self):
-        return self.userStorage.get_username()
+        result = self.userStorage.get_username()
+        if result:
+            return result
+        else:
+            return "False"
