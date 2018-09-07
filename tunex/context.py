@@ -19,6 +19,7 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
+        # Get all auto scaling groups
         reponse = self.autoscaling.describe_auto_scaling_groups()
         if int(reponse['ResponseMetadata']['HTTPStatusCode']) == 200:
             return list(reponse['AutoScalingGroups'])

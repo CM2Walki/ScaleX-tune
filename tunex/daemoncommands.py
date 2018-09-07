@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import namesgenerator # clustername = str(namesgenerator.get_random_name()).replace("_", "")
 from context import Context
 
 
@@ -23,7 +23,7 @@ class DaemonCommands:
                                            self.userStorage.get_awstoken(),
                                            self.userStorage.get_awsregion())
                 response = self.userContext.build_context()
-                return 'User setup successful detected %s running clusters' % len(response)
+                return 'User setup successful! Detected %s running tunex auto scaling clusters' % len(response)
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \
                        'awssecret, awstoken, awsregion and awskeyname are setup for user %s' % username
