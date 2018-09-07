@@ -24,10 +24,10 @@ class Context:
         if int(reponse['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
             grouplist = list(reponse['AutoScalingGroups'])
-            #out = []
-            #for s in grouplist:
-            #    if str.startswith(str(s), 'tunex-'):
-            #        out.append(s)
+            out = []
+            for s in grouplist:
+                if str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
+                    out.append(s)
             return grouplist
         else:
             return []
