@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import gevent
+
+import time
 import gevent.monkey
 from gevent.pywsgi import WSGIServer
 from daemon import Daemon
@@ -38,3 +39,5 @@ class TunexDaemon(Daemon):
         self.commandList = Commands(self.mongodbORM, self.userStorage)
         http_server = WSGIServer((self.host, self.port), self.app)
         http_server.serve_forever()
+        while True:
+            time.sleep(1)
