@@ -5,7 +5,7 @@ from tunexdaemon import TunexDaemon
 
 if __name__ == "__main__":
     host = 'localhost'
-    port = '8081'
+    port = 8081
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
