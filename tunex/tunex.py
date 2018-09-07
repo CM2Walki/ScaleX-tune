@@ -83,7 +83,9 @@ if __name__ == "__main__":
         sys.exit(0)
     elif len(sys.argv) == 5:
         if 'setup' == sys.argv[2] and '--force' == sys.argv[3]:
-            print 'Do Things'  # TunexDaemon.commandList.setupUser(sys.argv[4])
+            print 'Setting up %s' % sys.argv[4]
+            response = tunexclient.setup_user(sys.argv[4])
+            print response
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
