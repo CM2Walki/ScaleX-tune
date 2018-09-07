@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
             response = tunexclient.get_active_user()
-            if not bool(response):
+            if response == "False":
                 print 'No active user detected! Setting up %s' % sys.argv[2]
                 response = tunexclient.setup_user(sys.argv[2])
             else:
