@@ -14,9 +14,7 @@ class Context:
                                   aws_secret_access_key=awssecret,
                                   region_name=awsregion)
         self.clusterlist = []
-        self.build_context()
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
-        response = self.ec2.describe_instances()
-        print(response)
+        return self.ec2.describe_instances()

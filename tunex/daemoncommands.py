@@ -22,7 +22,8 @@ class DaemonCommands:
                 self.userContext = Context(self.userStorage.get_awssecret(),
                                            self.userStorage.get_awstoken(),
                                            self.userStorage.get_awsregion())
-                return 'User setup successful detected X running clusters'
+                response = self.userContext.build_context()
+                return 'User setup successful detected X running clusters\n%s' % response
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \
                        'awssecret, awstoken, awsregion and awskeyname are setup for user %s' % username
