@@ -22,13 +22,11 @@ class DaemonCommands:
                 #self.userContext = Context(self.userStorage.get_awssecret(),
                 #                           self.userStorage.get_awstoken(),
                 #                           self.userStorage.get_awsregion())
-                print 'User setup successful detected X running clusters'
+                return 'User setup successful detected X running clusters'
             else:
-                print 'User setup not complete in ScaleX Database'
-                sys.exit(2)
+                return 'User setup not complete in ScaleX Database'
         else:
-            print 'User setup failed! Username not found in ScaleX Database'
-            sys.exit(2)
+            return 'User setup failed! Username not found in ScaleX Database'
 
     def get_active_user(self):
         result = self.userStorage.get_username()
