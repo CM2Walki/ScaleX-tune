@@ -32,6 +32,7 @@ class TunexClient:
 
     def setup_user(self, username):
         response = requests.get(self.build_request('setup_user'), params={'username': str(username)})
+        print response.url
         if response.status_code == 200:
             return response.text
         else:
