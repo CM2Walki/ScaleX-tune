@@ -4,13 +4,13 @@ import sys
 from context import Context
 
 
-class Commands:
+class DaemonCommands:
     def __init__(self, mongodborm, userstorage):
         self.mongodbORM = mongodborm
         self.userStorage = userstorage
         self.userContext = None
 
-    def setupUser(self, username):
+    def setup_user(self, username):
         result = self.mongodbORM.get_user_info_from_name(username)
         if result is not None:
             if result["username"] and result["awssecret"] and result["awstoken"] and result["awsregion"] and result["awskeyname"]:
@@ -29,3 +29,6 @@ class Commands:
         else:
             print 'User setup failed! Username not found in ScaleX Database'
             sys.exit(2)
+
+    def get_active_user(self):
+        return self.userStorage.get_username()

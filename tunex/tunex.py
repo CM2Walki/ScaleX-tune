@@ -2,34 +2,28 @@
 
 import sys
 from tunexdaemon import TunexDaemon
-
-class Tunex:
-    def __init__(self, alias):
-        self.alias = alias
-
-    def setup_hostfile(self):
-        with open("/etc/hosts", "r+") as file:
-            for line in file:
-                if '127.0.0.1	tunex' in line:
-                    break
-            else:
-                file.write('127.0.0.1	tunex')
-
+from tunexclient import TunexClient
 
 if __name__ == "__main__":
+    # Setup variables
     alias = 'tunex'
+    api = 'api/v1/'
     host = 'localhost'
     port = 8081
-    tunex = Tunex(alias)
-    tunex.setup_hostfile()
-    daemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
+
+    # Setup tunexclient
+    tunexclient = TunexClient(alias, port, api)
+    tunexclient.setup_hostfile()
+
+    # Setup tunexdaemon
+    tunexdaemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
-            daemon.start()
+            tunexdaemon.start()
         elif 'stop' == sys.argv[1]:
-            daemon.stop()
+            tunexdaemon.stop()
         elif 'restart' == sys.argv[1]:
-            daemon.restart()
+            tunexdaemon.restart()
         elif 'setup' == sys.argv[1]:
             print '"%s %s" requires exactly 1 argument\n' % (sys.argv[0], sys.argv[1])
             print 'Usage: %s %s [USERNAME]\n' % (sys.argv[0], sys.argv[1])
@@ -77,11 +71,12 @@ if __name__ == "__main__":
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            data = ':CODE:'
-            if data == ':CODE:':
+            response = tunexclient.get_active_user()
+            print response
+            if response == '':
                 print 'We are through!'
             else:
-                print 'tunex already setup for user %s\n' % data
+                print 'tunex already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)

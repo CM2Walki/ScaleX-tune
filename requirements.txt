@@ -5,3 +5,4 @@ Flask
 flask-classy
 greenlet
 gevent==1.2.2
+Requests
