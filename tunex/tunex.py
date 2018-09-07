@@ -75,6 +75,7 @@ if __name__ == "__main__":
             if response == "False":
                 print 'No active user detected! Setting up %s' % sys.argv[2]
                 response = tunexclient.setup_user(sys.argv[2])
+                print response
             else:
                 print 'tunex already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
