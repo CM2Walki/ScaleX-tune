@@ -8,7 +8,7 @@ from daemon import Daemon
 from mongodb import MongoDatabase
 from storage import Storage
 from daemoncommands import DaemonCommands
-from flask import Flask, Response
+from flask import Flask, request
 from flask_classy import FlaskView, route
 
 
@@ -32,9 +32,10 @@ class V1View(FlaskView):
     def get_username(self):
         return self.commandList.get_active_user()
 
-    @route('/setup_user/<username>')
-    def setup_user(self, username):
-        return self.commandList.setup_user(str(username))
+    @route('/setup_user')
+    def setup_user(self):
+        username = str(request.args.get('username'))
+        return self.commandList.setup_user(username)
 
 
 class TunexDaemon(Daemon):
