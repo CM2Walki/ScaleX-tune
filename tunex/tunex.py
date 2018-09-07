@@ -3,9 +3,24 @@
 import sys
 from tunexdaemon import TunexDaemon
 
+class Tunex:
+    def __init__(self, alias):
+        self.alias = alias
+
+    def setup_hostfile(self):
+        with open("/etc/hosts", "r+") as file:
+            for line in file:
+                if '127.0.0.1	tunex' in line:
+                    break
+            else:
+                file.write('127.0.0.1	tunex')
+
+
 if __name__ == "__main__":
+    alias = 'tunex'
     host = 'localhost'
     port = 8081
+    tunex = Tunex(alias)
     daemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:

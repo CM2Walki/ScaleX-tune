@@ -9,13 +9,13 @@ from mongodb import MongoDatabase
 from storage import Storage
 from commands import Commands
 from flask import Flask, Response
-from flask_classy import FlaskView
-
+from flask_classy import FlaskView, route
 
 gevent.monkey.patch_all()
 
 
-class DaemonView(FlaskView):
+class APIView(FlaskView):
+    @route('/')
     def index(self):
         return "Test just a test"
 
@@ -31,7 +31,7 @@ class TunexDaemon(Daemon):
         self.host = host
         self.port = port
         self.app = Flask(name)
-        DaemonView.register(self.app)
+        APIView.register(self.app)
 
     def run(self):
         self.mongodbORM = MongoDatabase('localhost', 27017)
