@@ -12,8 +12,8 @@ class TunexClient:
 
     @staticmethod
     def setup_hostfile():
-        with open("/etc/hosts", "r+") as file:
-            for line in file:
+        with open("/etc/hosts", "r+") as f:
+            for line in f:
                 if '127.0.0.1	tunex' in line:
                     break
             else:
