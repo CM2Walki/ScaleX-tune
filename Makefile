@@ -6,11 +6,11 @@ update:
 	git reset --hard origin/master
 
 clean-build:
-	rm -rf tunex/build/
-	rm -rf tunex/dist/
+	rm -rf tunex/build/ > /dev/null 2>&1
+	rm -rf tunex/dist/ > /dev/null 2>&1
 	find tunex/ -name '*.pyc' -exec rm --force {} +
 	find tunex/ -name '*.pyo' -exec rm --force {} +
-	rm /var/log/tunex.log
+	rm /var/log/tunex.log > /dev/null 2>&1
 
 build:
 	cd /usr/src/ScaleX-tune/tunex/ && pyinstaller --onefile tunex.py
