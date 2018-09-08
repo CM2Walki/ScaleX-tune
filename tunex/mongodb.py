@@ -5,11 +5,14 @@ from pymongo import MongoClient
 
 class MongoDatabase:
     def __init__(self, host, port):
-        self.mongoclient = MongoClient(host, port)
+        self.mongoclient = None
         self.host = host
         self.port = port
 
     def get_user_info_from_name(self, username):
+        if not self.mongoclient:
+            self.mongoclient = MongoClient(self.host, self.port)
+
         db = self.mongoclient['dbUsersData']
         collection = db['usersData']
         cursor = collection.find({"userInfo.username": username})
