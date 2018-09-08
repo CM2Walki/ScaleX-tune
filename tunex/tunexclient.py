@@ -12,12 +12,12 @@ class TunexClient:
         self.url = 'http://%s:%s/%s' % (alias, port, api)
 
     def setup_hostfile(self):
-        with open("/etc/hosts", "r+") as fu:
-            for line in fu:
+        with open("/etc/hosts", "r+") as file:
+            for line in file:
                 if '127.0.0.1	%s' % self.alias in line:
                     break
             else:
-                fu.write('127.0.0.1	%s\n' % self.alias)
+                file.write('127.0.0.1	%s\n' % self.alias)
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)
