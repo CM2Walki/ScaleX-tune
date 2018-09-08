@@ -12,12 +12,12 @@ class TunexClient:
 
     @staticmethod
     def setup_hostfile():
-        with open("/etc/hosts", "r+") as f:
-            for line in f:
+        with open("/etc/hosts", "r+") as file:
+            for line in file:
                 if '127.0.0.1	tunex' in line:
                     break
             else:
-                f.write('127.0.0.1	tunex')
+                file.write('127.0.0.1	tunex')
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)
