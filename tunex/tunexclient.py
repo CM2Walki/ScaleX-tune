@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import requests, sys
+
+import requests, sys, io
 
 
 class TunexClient:
@@ -11,7 +12,7 @@ class TunexClient:
         self.url = 'http://%s:%s/%s' % (alias, port, api)
 
     def setup_hostfile(self):
-        with open("/etc/hosts", "r+") as f:
+        with io.open("/etc/hosts", "r+") as f:
             for line in f:
                 if '127.0.0.1	%s' % self.alias in line:
                     break
