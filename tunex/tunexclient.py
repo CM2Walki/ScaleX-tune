@@ -17,7 +17,6 @@ class TunexClient:
                 if '127.0.0.1	%s' % self.alias in line:
                     break
             else:
-                #f.write('127.0.0.1	%s\n' % self.alias)
                 print(f)
 
     def build_request(self, query):
