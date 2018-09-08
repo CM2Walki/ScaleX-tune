@@ -8,8 +8,8 @@ update:
 clean-build:
 	rm -rf tunex/build/ > /dev/null 2>&1
 	rm -rf tunex/dist/ > /dev/null 2>&1
-	find tunex/ -name '*.pyc' -exec rm --force {} +
-	find tunex/ -name '*.pyo' -exec rm --force {} +
+	find tunex/ -name '*.pyc' -exec rm --force {} + > /dev/null 2>&1
+	find tunex/ -name '*.pyo' -exec rm --force {} + > /dev/null 2>&1
 	rm /var/log/tunex.log > /dev/null 2>&1
 
 build:
