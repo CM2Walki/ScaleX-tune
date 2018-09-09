@@ -20,16 +20,34 @@ class Context:
     # Retrieve active clusters created by tunex in the past
     def build_context(self):
         # Get all auto scaling groups
-        reponse = self.auto_scaling.describe_auto_scaling_groups()
-        if int(reponse['ResponseMetadata']['HTTPStatusCode']) == 200:
+        response = self.auto_scaling.describe_auto_scaling_groups()
+        answer = ''
+        if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
-            group_list = list(reponse['AutoScalingGroups'])
+            group_list = list(response['AutoScalingGroups'])
             out = []
             # Find tunex clusters that might be running
             for s in group_list:
                 if str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
                     out.append(s['AutoScalingGroupName'])
                     self.cluster_list.append(s)
-            return out
+            answer += 'User setup successful! Detected %s running tunex auto scaling cluster(s)' % len(out)
         else:
-            return []
+            answer = 'Daemon error whilst executing describe_auto_scaling_groups (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
+            return answer
+        response = self.auto_scaling.describe_launch_configurations()
+        # Get launch configurations
+        if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
+            # We received something
+            group_list = list(response['LaunchConfigurations'])
+            out = []
+            # Find tunex clusters that might be running
+            for s in group_list:
+                if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
+                    answer += '\nFound tunex-cluster launch configuration'
+                    break
+            else:
+                answer += 'Unable to find tunex-cluster launch configuration'
+        else:
+            answer = 'Daemon error whilst contacting AWS (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
+        return answer

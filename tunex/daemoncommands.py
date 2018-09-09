@@ -28,7 +28,7 @@ class DaemonCommands:
                                            self.userStorage.get_awsregion())
                 # Retrieve running clusters
                 response = self.userContext.build_context()
-                return 'User setup successful! Detected %s running tunex auto scaling cluster(s)' % len(response)
+                return response
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \
                        'awssecret, awstoken, awsregion and awskeyname are setup for user %s' % username
