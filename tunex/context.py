@@ -44,7 +44,7 @@ class Context:
             # Find tunex clusters that might be running
             for s in group_list:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
-                    answer += '\nFound tunex-cluster launch configuration\n%s', str(response['LaunchConfigurations'])
+                    answer += '\nFound tunex-cluster launch configuration\n%s', group_list
                     break
             else:
                 response2 = self.auto_scaling.create_launch_configuration()
