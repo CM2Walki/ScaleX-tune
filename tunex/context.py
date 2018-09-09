@@ -16,7 +16,6 @@ class Context:
                                   aws_secret_access_key=awssecret,
                                   region_name=awsregion,
                                   use_ssl=False)
-        # TODO: Figure out why SSL is breaking
         self.ec2 = self.session.client('ec2',
                                   aws_access_key_id=awstoken,
                                   aws_secret_access_key=awssecret,
@@ -56,7 +55,7 @@ class Context:
                     break
             else:
                 # It doesn't exists
-                # Create sggroup
+                # Create security group
                 response2 = QueryData.QueryData.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
