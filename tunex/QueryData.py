@@ -11,8 +11,7 @@ class QueryData:
             SecurityGroups=[
                 'sg-tunex',
             ],
-            UserData='string',
-            InstanceId='string',
+            UserData='',
             InstanceType='t2.micro',
             BlockDeviceMappings=[
                 {
