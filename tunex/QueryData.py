@@ -7,7 +7,7 @@ class QueryData:
         client.create_launch_configuration(
             LaunchConfigurationName='tunex-cluster',
             ImageId='ami-027583e616ca104df',
-            KeyName=storage.set_awspubkeyname(),
+            KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
                 'sg-tunex',
             ],
