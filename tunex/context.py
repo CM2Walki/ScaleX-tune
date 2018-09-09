@@ -44,10 +44,11 @@ class Context:
             # Find tunex clusters that might be running
             for s in group_list:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
-                    answer += '\nFound tunex-cluster launch configuration'
+                    answer += '\nFound tunex-cluster launch configuration\n%s', str(response['LaunchConfigurations'])
                     break
             else:
-                answer += 'Unable to find tunex-cluster launch configuration'
+                response2 = self.auto_scaling.create_launch_configuration()
+                answer += '\nUnable to find tunex-cluster launch configuration'
         else:
-            answer = 'Daemon error whilst contacting AWS (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
+            answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
         return answer
