@@ -16,6 +16,12 @@ class Context:
                                   aws_secret_access_key=awssecret,
                                   region_name=awsregion,
                                   use_ssl=False)
+        # TODO: Figure out why SSL is breaking
+        self.ec2 = self.session.client('ec2',
+                                  aws_access_key_id=awstoken,
+                                  aws_secret_access_key=awssecret,
+                                  region_name=awsregion,
+                                  use_ssl=False)
         self.cluster_list = []
 
     # Retrieve active clusters created by tunex in the past
@@ -48,6 +54,7 @@ class Context:
                     answer += str(s)
                     break
             else:
+                response2 = QueryData.QueryData.create_sggroup(self.ec2)
                 response2 = QueryData.QueryData.create_launch_configuration(self.auto_scaling, storage)
                 answer += '\nUnable to find tunex-cluster launch configuration'
         else:

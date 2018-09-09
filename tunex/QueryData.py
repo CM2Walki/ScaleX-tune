@@ -4,7 +4,7 @@
 class QueryData:
     @staticmethod
     def create_launch_configuration(client, storage):
-        client.create_launch_configuration(
+        return client.create_launch_configuration(
             LaunchConfigurationName='tunex-cluster',
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
@@ -29,3 +29,9 @@ class QueryData:
             },
             EbsOptimized=False,
             AssociatePublicIpAddress=True)
+
+    @staticmethod
+    def create_sggroup(client):
+        return client.create_security_group(
+            Description='ScaleX-tunex cluster security group',
+            GroupName='sg-tunex')
