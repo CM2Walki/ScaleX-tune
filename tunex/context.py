@@ -40,23 +40,35 @@ class Context:
                     self.cluster_list.append(s)
             answer += 'User setup successful! Detected %s running tunex auto scaling cluster(s)' % len(out)
         else:
-            answer = 'Daemon error whilst executing describe_auto_scaling_groups (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
+            answer = 'Daemon error whilst executing describe_auto_scaling_groups (Code: %s)', \
+                     response['ResponseMetadata']['HTTPStatusCode']
             return answer
         response = self.auto_scaling.describe_launch_configurations()
         # Get launch configurations
         if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
             group_list = list(response['LaunchConfigurations'])
-            # Find tunex clusters that might be running
+            # Find out if launch config exists
             for s in group_list:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
                     answer += '\nFound tunex-cluster launch configuration'
-                    answer += str(s)
+                    # We found it, it is already created
                     break
             else:
+                # It doesn't exists
+                # Create sggroup
                 response2 = QueryData.QueryData.create_sggroup(self.ec2)
+                if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                    return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
+                           response['ResponseMetadata']['HTTPStatusCode']
+                # Create launch configuration
                 response2 = QueryData.QueryData.create_launch_configuration(self.auto_scaling, storage)
-                answer += '\nUnable to find tunex-cluster launch configuration'
+                if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                    return 'Daemon error whilst contacting executing create_launch_configuration (Code: %s)', \
+                           response['ResponseMetadata']['HTTPStatusCode']
+                answer += '\nCreated tunex-cluster launch configuration'
         else:
-            answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
+            answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', \
+                     response['ResponseMetadata']['HTTPStatusCode']
+            return answer
         return answer
