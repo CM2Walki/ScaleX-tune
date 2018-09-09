@@ -11,15 +11,9 @@ class QueryData:
             SecurityGroups=[
                 'sg-tunex',
             ],
-            ClassicLinkVPCId='',
-            ClassicLinkVPCSecurityGroups=[
-                '',
-            ],
             UserData='string',
             InstanceId='string',
             InstanceType='t2.micro',
-            KernelId='',
-            RamdiskId='',
             BlockDeviceMappings=[
                 {
                     'DeviceName': '/dev/sda1',
