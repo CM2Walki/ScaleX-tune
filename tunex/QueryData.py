@@ -9,7 +9,7 @@ class QueryData:
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
-                'sg-tunex',
+                'tunex',
             ],
             UserData='',
             InstanceType='t2.micro',
@@ -34,4 +34,4 @@ class QueryData:
     def create_sggroup(client):
         return client.create_security_group(
             Description='ScaleX-tunex cluster security group',
-            GroupName='sg-tunex')
+            GroupName='tunex')
