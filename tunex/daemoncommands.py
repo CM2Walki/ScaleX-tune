@@ -27,7 +27,7 @@ class DaemonCommands:
                                            self.userStorage.get_awstoken(),
                                            self.userStorage.get_awsregion())
                 # Retrieve running clusters
-                response = self.userContext.build_context()
+                response = self.userContext.build_context(self.userStorage)
                 return response
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \

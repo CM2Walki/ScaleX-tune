@@ -19,7 +19,7 @@ class Context:
         self.cluster_list = []
 
     # Retrieve active clusters created by tunex in the past
-    def build_context(self):
+    def build_context(self, storage):
         # Get all auto scaling groups
         response = self.auto_scaling.describe_auto_scaling_groups()
         answer = ''
@@ -48,7 +48,7 @@ class Context:
                     answer += str(s)
                     break
             else:
-                response2 = QueryData.QueryData.create_launch_configuration()
+                response2 = QueryData.QueryData.create_launch_configuration(self.auto_scaling, storage)
                 answer += '\nUnable to find tunex-cluster launch configuration'
         else:
             answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
