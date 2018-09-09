@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import boto3
+import QueryData
 
 
 class Context:
@@ -47,7 +48,7 @@ class Context:
                     answer += str(s)
                     break
             else:
-                response2 = self.auto_scaling.create_launch_configuration()
+                response2 = QueryData.QueryData.create_launch_configuration()
                 answer += '\nUnable to find tunex-cluster launch configuration'
         else:
             answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', response['ResponseMetadata']['HTTPStatusCode']
