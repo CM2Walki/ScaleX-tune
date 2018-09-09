@@ -40,12 +40,11 @@ class Context:
         if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
             group_list = list(response['LaunchConfigurations'])
-            out = []
             # Find tunex clusters that might be running
             for s in group_list:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
                     answer += '\nFound tunex-cluster launch configuration'
-                    answer += str(s['LaunchConfigurationName'])
+                    answer += str(s)
                     break
             else:
                 response2 = self.auto_scaling.create_launch_configuration()
