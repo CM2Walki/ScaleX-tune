@@ -23,7 +23,7 @@ class V1View(FlaskView):
 
     @route('/')
     def index(self):
-        return ''
+        return ""
 
     @route('/get_active_user')
     def get_username(self):

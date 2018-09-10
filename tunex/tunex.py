@@ -4,7 +4,6 @@ import sys
 from tunexdaemon import TunexDaemon
 from tunexclient import TunexClient
 
-
 if __name__ == "__main__":
     # Setup variables
     alias = 'tunex'
@@ -12,12 +11,12 @@ if __name__ == "__main__":
     host = 'localhost'
     port = 8081
 
-    # Setup tunex client
+    # Setup tunexclient
     tunexclient = TunexClient(alias, port, api)
     tunexclient.setup_hostfile()
 
-    # Setup tunex daemon (if not already running)
-    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port)
+    # Setup tunexdaemon (if not already running)
+    tunexdaemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
 
     # Argument handling (client)
     if len(sys.argv) == 2:
@@ -32,7 +31,7 @@ if __name__ == "__main__":
             print 'Usage: %s %s [USERNAME]\n' % (sys.argv[0], sys.argv[1])
             print 'Fetch the AWS data from the ScaleX database for [USERNAME]\n'
             print 'Options:'
-            print '  --force      Reinitialize %s with provided user', alias
+            print '  --force      Reinitialize tunex with provided user'
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
@@ -80,7 +79,7 @@ if __name__ == "__main__":
                 response = tunexclient.setup_user(sys.argv[2])
                 print response
             else:
-                print '%s already setup for user %s\n' % (alias, response)
+                print 'tunex already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)
@@ -93,9 +92,9 @@ if __name__ == "__main__":
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
-        print '  start		Starts the %s-daemon' % alias
-        print '  stop		Stops the %s-daemon' % alias
-        print '  restart	Restarts the %s-daemon' % alias
+        print '  start		Starts the tunex-daemon'
+        print '  stop		Stops the tunex-daemon'
+        print '  restart	Restarts the tunex-daemon'
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
         sys.exit(2)

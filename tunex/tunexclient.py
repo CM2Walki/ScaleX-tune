@@ -1,17 +1,12 @@
 #!/usr/bin/env python
 
 
-import requests
-import sys
-
-alias = None
+import requests, sys
 
 
 class TunexClient:
-    def __init__(self, palias, port, api):
-        global alias
-        alias = palias
-        self.alias = palias
+    def __init__(self, alias, port, api):
+        self.alias = alias
         self.port = port
         self.api = api
         self.url = 'http://%s:%s/%s' % (alias, port, api)

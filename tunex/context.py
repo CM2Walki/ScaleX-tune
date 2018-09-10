@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
 import boto3
-import query
-import tunexclient
+import QueryData
 
 
 class Context:
-    def __init__(self, awssecret, awstoken, awsregion, alias):
+    def __init__(self, awssecret, awstoken, awsregion):
         self.session = boto3.session.Session()
         # Hack for mounting boto3 into a binary
         # correlating to https://github.com/boto/boto3/issues/275
@@ -17,6 +16,7 @@ class Context:
                                                 aws_secret_access_key=awssecret,
                                                 region_name=awsregion,
                                                 use_ssl=False)
+        # TODO: Figure out why SSL is breaking
         self.ec2 = self.session.client('ec2',
                                        aws_access_key_id=awstoken,
                                        aws_secret_access_key=awssecret,
@@ -35,10 +35,10 @@ class Context:
             out = []
             # Find tunex clusters that might be running
             for s in group_list:
-                if str.startswith(str(s['AutoScalingGroupName']), ('%s-' % tunexclient.alias)):
+                if str.startswith(str(s['AutoScalingGroupName']), 'tunex-'):
                     out.append(s['AutoScalingGroupName'])
                     self.cluster_list.append(s)
-            answer += 'User setup successful! Detected %s running %s auto scaling cluster(s)' % (tunexclient.alias, len(out))
+            answer += 'User setup successful! Detected %s running tunex auto scaling cluster(s)' % len(out)
         else:
             answer = 'Daemon error whilst executing describe_auto_scaling_groups (Code: %s)', \
                      response['ResponseMetadata']['HTTPStatusCode']
@@ -50,23 +50,23 @@ class Context:
             group_list = list(response['LaunchConfigurations'])
             # Find out if launch config exists
             for s in group_list:
-                if str.startswith(str(s['LaunchConfigurationName']), ('%s-cluster' % tunexclient.alias)):
-                    answer += '\nFound %s-cluster launch configuration' % tunexclient.alias
+                if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
+                    answer += '\nFound tunex-cluster launch configuration'
                     # We found it, it is already created
                     break
             else:
                 # It doesn't exists
-                # Create security group
-                response2 = query.Command.create_sggroup(self.ec2, tunexclient.alias)
+                # Create sggroup
+                response2 = QueryData.QueryData.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
                 # Create launch configuration
-                response2 = query.Command.create_launch_configuration(self.auto_scaling, storage, tunexclient.alias)
+                response2 = QueryData.QueryData.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_launch_configuration (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
-                answer += '\nCreated %s-cluster launch configuration' % tunexclient.alias
+                answer += '\nCreated tunex-cluster launch configuration'
         else:
             answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', \
                      response['ResponseMetadata']['HTTPStatusCode']
