@@ -2,7 +2,6 @@
 
 import namesgenerator # clustername = str(namesgenerator.get_random_name()).replace("_", "")
 from context import Context
-from tunexdaemon import TunexDaemon
 
 
 class DaemonCommands:
@@ -26,8 +25,7 @@ class DaemonCommands:
                 # Setup AWS connection and available resources
                 self.userContext = Context(self.userStorage.get_awssecret(),
                                            self.userStorage.get_awstoken(),
-                                           self.userStorage.get_awsregion(),
-                                           TunexDaemon.alias)
+                                           self.userStorage.get_awsregion())
                 # Retrieve running clusters
                 response = self.userContext.build_context(self.userStorage)
                 return response

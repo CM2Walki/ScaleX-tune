@@ -3,10 +3,14 @@
 
 import requests, sys
 
+alias = None
+
 
 class TunexClient:
-    def __init__(self, alias, port, api):
-        self.alias = alias
+    def __init__(self, palias, port, api):
+        global alias
+        alias = palias
+        self.alias = palias
         self.port = port
         self.api = api
         self.url = 'http://%s:%s/%s' % (alias, port, api)
