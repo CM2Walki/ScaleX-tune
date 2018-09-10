@@ -90,7 +90,7 @@ if __name__ == "__main__":
             print response
         elif 'cluster' == sys.argv[1] and 'status' == sys.argv[2]:
             if '--all' == sys.argv[3]:
-                print 'Cluster Status for all running clusters:\n:'
+                print 'Cluster Status for all running clusters:\n'
                 response = tunexclient.cluster_status()
                 print response
             else:

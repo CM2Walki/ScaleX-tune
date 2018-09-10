@@ -38,6 +38,7 @@ class V1View(FlaskView):
     def cluster_status(self):
         return commandList.cluster_status()
 
+
 class TunexDaemon(Daemon):
     app = None
 
