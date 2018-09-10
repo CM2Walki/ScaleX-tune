@@ -28,8 +28,8 @@ if __name__ == "__main__":
             tunexdaemon.restart()
         elif 'setup' == sys.argv[1]:
             print '"%s %s" requires exactly 1 argument\n' % (sys.argv[0], sys.argv[1])
-            print 'Usage: %s %s [USERNAME]\n' % (sys.argv[0], sys.argv[1])
-            print 'Fetch the AWS data from the ScaleX database for [USERNAME]\n'
+            print 'Usage: %s %s USERNAME\n' % (sys.argv[0], sys.argv[1])
+            print 'Fetch the AWS data from the ScaleX database for USERNAME\n'
             print 'Options:'
             print '  --force      Reinitialize tunex with provided user'
         elif 'cluster' == sys.argv[1]:

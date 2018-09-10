@@ -8,9 +8,10 @@ import query
 
 
 def update(arg):
+    cluster_list = arg[0]
+    cluster_stats = arg[1]
     while True:
-        print str(arg[0])
-        print str(arg[1])
+        cluster_stats.append("ALIVE AND WELL")
         sleep(1)
 
 class Context:
@@ -35,7 +36,7 @@ class Context:
         self.cluster_list = []
         self.cluster_stats = []
         self.updater = Thread(target=update,
-                              args=(self.cluster_list, self.cluster_stats))
+                              args=(self.cluster_list, self.cluster_stats))  # Note: We are passing references!
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
@@ -104,3 +105,9 @@ class Context:
                      response['ResponseMetadata']['HTTPStatusCode']
             return answer
         return answer
+
+    def get_clusterlist(self):
+        return self.cluster_list
+
+    def get_cluster_stats(self):
+        return self.cluster_stats
