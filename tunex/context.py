@@ -36,9 +36,9 @@ class Context:
         self.cluster_stats = []
         updater = Thread(target=update,
                               args=(self.cluster_list, self.cluster_stats))  # Note: We are passing references!
-        updater.daemon = True
+        #updater.daemon = True
         updater.start()
-        updater.join()
+        #updater.join()
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
