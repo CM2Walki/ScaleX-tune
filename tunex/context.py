@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 
+from threading import Thread
+from time import sleep
+
 import boto3
 import query
 
 
+def update(arg):
+    while True:
+        print str(arg[0])
+        print str(arg[1])
+        sleep(1)
+
 class Context:
-    def __init__(self, awssecret, awstoken, awsregion):
+    def __init__(self, awssecret, awstoken, awsregion, awssubnet):
         self.session = boto3.session.Session()
         # Hack for mounting boto3 into a binary
         # correlating to https://github.com/boto/boto3/issues/275
@@ -22,8 +31,11 @@ class Context:
                                        region_name=awsregion,
                                        use_ssl=False)
         self.security_group = None
+        self.awssubnet = awssubnet
         self.cluster_list = []
         self.cluster_stats = []
+        self.updater = Thread(target=update,
+                              args=(self.cluster_list, self.cluster_stats))
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
@@ -64,7 +76,7 @@ class Context:
                     break
             else:
                 # It doesn't exist
-                # Create sggroup
+                # Create security group
                 response2 = query.Command.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \

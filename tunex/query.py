@@ -36,14 +36,12 @@ class Command:
     def create_sggroup(ec2):
         return ec2.create_security_group(
             Description='ScaleX-tunex cluster security group',
-            GroupName='tunex',
-            VpcId='',)
+            GroupName='tunex')
 
     @staticmethod
-    def create_subnet(ec2):
-        return ec2.create_subnet(
-            CidrBlock='10.0.0.0/24',
-            VpcId='string',)
+    def get_sggroup(ec2):
+        return ec2.describe_security_groups(
+            GroupNames=['tunex'])
 
     # TODO: Make Security Group port rules dependent on the k8s deployments of each cluster
     @staticmethod
