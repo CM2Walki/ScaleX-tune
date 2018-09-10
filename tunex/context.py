@@ -106,7 +106,7 @@ class Context:
             return answer
         return answer
 
-    def get_clusterlist(self):
+    def get_cluster_list(self):
         return self.cluster_list
 
     def get_cluster_stats(self):
