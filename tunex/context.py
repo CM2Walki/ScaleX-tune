@@ -75,7 +75,7 @@ class Context:
                                 response2['ResponseMetadata']['HTTPStatusCode']
                     self.security_group = response2["SecurityGroups"][0]['GroupId']
                 # Create launch configuration
-                response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
+                response2 = query.Command.create_launch_configuration(self.auto_scaling, storage, self.security_group)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_launch_configuration (Code: %s)', \
                            response2['ResponseMetadata']['HTTPStatusCode']

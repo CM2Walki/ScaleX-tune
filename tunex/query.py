@@ -5,13 +5,13 @@ import tunex
 
 class Command:
     @staticmethod
-    def create_launch_configuration(autoscaling, storage):
+    def create_launch_configuration(autoscaling, storage, security_group):
         return autoscaling.create_launch_configuration(
             LaunchConfigurationName='tunex-cluster',
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
-                'tunex',
+                str(security_group),
             ],
             UserData='',
             InstanceType='t2.micro',
