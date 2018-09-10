@@ -2,11 +2,11 @@
 
 import boto3
 import Query
-import tunex
 
 
 class Context:
     def __init__(self, awssecret, awstoken, awsregion):
+        import tunex
         self.session = boto3.session.Session()
         # Hack for mounting boto3 into a binary
         # correlating to https://github.com/boto/boto3/issues/275
@@ -38,7 +38,7 @@ class Context:
                 if str.startswith(str(s['AutoScalingGroupName']), ('%s-' % tunex.alias)):
                     out.append(s['AutoScalingGroupName'])
                     self.cluster_list.append(s)
-            answer += 'User setup successful! Detected %s running %s auto scaling cluster(s)' % (len(out), tunex.alias)
+            answer += 'User setup successful! Detected %s running %s auto scaling cluster(s)' % (tunex.alias, len(out))
         else:
             answer = 'Daemon error whilst executing describe_auto_scaling_groups (Code: %s)', \
                      response['ResponseMetadata']['HTTPStatusCode']

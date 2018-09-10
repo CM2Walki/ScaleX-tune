@@ -13,11 +13,11 @@ port = 8081
 
 
 if __name__ == "__main__":
-    # Setup tunexclient
+    # Setup tunex client
     tunexclient = TunexClient(alias, port, api)
     tunexclient.setup_hostfile()
 
-    # Setup tunexdaemon (if not already running)
+    # Setup tunex daemon (if not already running)
     tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port)
 
     # Argument handling (client)
