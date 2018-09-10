@@ -62,7 +62,7 @@ class Context:
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
-                return response2
+                return str(response2)
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
