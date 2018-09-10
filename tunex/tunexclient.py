@@ -14,16 +14,20 @@ class TunexClient:
     def setup_hostfile(self):
         with open("/etc/hosts", "r+") as f:
             for line in f:
-                if '127.0.0.1	%s' % self.alias in line:
+                if '127.0.0.1	tunex' in line:
                     break
             else:
-                f.write('127.0.0.1	%s' % self.alias)
+                f.write('127.0.0.1  tunex')
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)
 
     def get_active_user(self):
-        response = requests.get(self.build_request('get_active_user'))
+        try:
+            response = requests.get(self.build_request('get_active_user'))
+        except requests.exceptions.ConnectionError:
+            print 'Unable to contact HTTP server! Is the Daemon running?'
+            sys.exit(2)
         if response.status_code == 200:
             return response.text
         else:
@@ -31,7 +35,11 @@ class TunexClient:
             sys.exit(2)
 
     def setup_user(self, username):
-        response = requests.get(self.build_request('setup_user'), params={'username': str(username)})
+        try:
+            response = requests.get(self.build_request('setup_user'), params={'username': str(username)})
+        except requests.exceptions.ConnectionError:
+            print 'Unable to contact HTTP server! Is the Daemon running?'
+            sys.exit(2)
         if response.status_code == 200:
             return response.text
         else:
