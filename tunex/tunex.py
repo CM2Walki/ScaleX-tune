@@ -5,12 +5,6 @@ from tunexdaemon import TunexDaemon
 from tunexclient import TunexClient
 
 
-alias = None
-api = None
-host = None
-port = None
-
-
 if __name__ == "__main__":
     # Setup variables
     alias = 'tunex'
@@ -23,7 +17,7 @@ if __name__ == "__main__":
     tunexclient.setup_hostfile()
 
     # Setup tunex daemon (if not already running)
-    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port)
+    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port, alias)
 
     # Argument handling (client)
     if len(sys.argv) == 2:

@@ -23,7 +23,7 @@ class V1View(FlaskView):
 
     @route('/')
     def index(self):
-        return ""
+        return ''
 
     @route('/get_active_user')
     def get_username(self):
@@ -37,13 +37,15 @@ class V1View(FlaskView):
 
 class TunexDaemon(Daemon):
     app = None
+    alias = None
 
-    def __init__(self, pidfile, name, host, port):
+    def __init__(self, pidfile, name, host, port, alias):
         Daemon.__init__(self, pidfile)
         self.app = None
         self.host = host
         self.port = port
         self.name = name
+        self.alias = alias
 
     def run(self):
         self.app = Flask(self.name)
