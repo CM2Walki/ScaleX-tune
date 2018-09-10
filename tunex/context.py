@@ -3,10 +3,8 @@
 import boto3
 import Query
 
-
 class Context:
     def __init__(self, awssecret, awstoken, awsregion):
-        import tunex
         self.session = boto3.session.Session()
         # Hack for mounting boto3 into a binary
         # correlating to https://github.com/boto/boto3/issues/275
@@ -26,6 +24,7 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
+        import tunex
         # Get all auto scaling groups
         response = self.auto_scaling.describe_auto_scaling_groups()
         answer = ''
