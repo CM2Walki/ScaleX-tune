@@ -2,6 +2,8 @@
 
 import boto3
 import Query
+import tunex
+
 
 class Context:
     def __init__(self, awssecret, awstoken, awsregion):
@@ -24,7 +26,6 @@ class Context:
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
-        import tunex
         # Get all auto scaling groups
         response = self.auto_scaling.describe_auto_scaling_groups()
         answer = ''
