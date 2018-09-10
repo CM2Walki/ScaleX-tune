@@ -48,18 +48,18 @@ class Context:
         # Get launch configurations
         if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
-            if not self.security_group:
-                response2 = query.Command.get_sggroup(self.ec2)
-                if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
-                    return 'Daemon error whilst contacting executing get_sggroup (Code: %s)', \
-                           response2['ResponseMetadata']['HTTPStatusCode']
-                self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
             group_list = list(response['LaunchConfigurations'])
             # Find out if launch config exists
             for s in group_list:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
                     answer += '\nFound tunex-cluster launch configuration'
                     # We found it, it is already created
+                    if not self.security_group:
+                        response2 = query.Command.get_sggroup(self.ec2)
+                        if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                            return 'Daemon error whilst contacting executing get_sggroup (Code: %ys)', \
+                                   response2['ResponseMetadata']['HTTPStatusCode']
+                        self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
                     break
             else:
                 # It doesn't exists
