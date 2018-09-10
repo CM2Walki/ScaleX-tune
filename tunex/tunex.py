@@ -5,14 +5,19 @@ from tunexdaemon import TunexDaemon
 from tunexclient import TunexClient
 
 
-# Setup variables
-alias = 'tunex'
-api = 'api/v1/'
-host = 'localhost'
-port = 8081
+alias = None
+api = None
+host = None
+port = None
 
 
 if __name__ == "__main__":
+    # Setup variables
+    alias = 'tunex'
+    api = 'api/v1/'
+    host = 'localhost'
+    port = 8081
+
     # Setup tunex client
     tunexclient = TunexClient(alias, port, api)
     tunexclient.setup_hostfile()
