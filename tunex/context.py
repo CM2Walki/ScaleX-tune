@@ -48,6 +48,12 @@ class Context:
         # Get launch configurations
         if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             # We received something
+            if not self.security_group:
+                response2 = query.Command.get_sggroup(self.ec2)
+                if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                    return 'Daemon error whilst contacting executing get_sggroup (Code: %s)', \
+                           response2['ResponseMetadata']['HTTPStatusCode']
+                self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
             group_list = list(response['LaunchConfigurations'])
             # Find out if launch config exists
             for s in group_list:
@@ -61,13 +67,18 @@ class Context:
                 response2 = query.Command.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
-                           response['ResponseMetadata']['HTTPStatusCode']
-                return str(response2)
+                           response2['ResponseMetadata']['HTTPStatusCode']
+                if not self.security_group:
+                    response2 = query.Command.get_sggroup(self.ec2)
+                    if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                        return 'Daemon error whilst contacting executing get_sggroup (Code: %s)', \
+                                response2['ResponseMetadata']['HTTPStatusCode']
+                    self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_launch_configuration (Code: %s)', \
-                           response['ResponseMetadata']['HTTPStatusCode']
+                           response2['ResponseMetadata']['HTTPStatusCode']
                 answer += '\nCreated tunex-cluster launch configuration'
         else:
             answer = 'Daemon error whilst contacting executing describe_launch_configurations (Code: %s)', \
