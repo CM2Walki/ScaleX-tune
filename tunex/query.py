@@ -5,8 +5,8 @@ import tunex
 
 class Command:
     @staticmethod
-    def create_launch_configuration(client, storage):
-        return client.create_launch_configuration(
+    def create_launch_configuration(autoscaling, storage):
+        return autoscaling.create_launch_configuration(
             LaunchConfigurationName='tunex-cluster',
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
@@ -33,7 +33,12 @@ class Command:
             AssociatePublicIpAddress=True)
 
     @staticmethod
-    def create_sggroup(client):
-        return client.create_security_group(
+    def create_sggroup(ec2):
+        return ec2.create_security_group(
             Description='ScaleX-tunex cluster security group',
             GroupName='tunex')
+
+    @staticmethod
+    def get_sggroup(ec2):
+        return ec2.describe_security_groups(
+            GroupNames=['tunex'])

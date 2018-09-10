@@ -16,13 +16,14 @@ class Context:
                                                 aws_secret_access_key=awssecret,
                                                 region_name=awsregion,
                                                 use_ssl=False)
-        # TODO: Figure out why SSL is breaking
         self.ec2 = self.session.client('ec2',
                                        aws_access_key_id=awstoken,
                                        aws_secret_access_key=awssecret,
                                        region_name=awsregion,
                                        use_ssl=False)
+        self.security_group = None
         self.cluster_list = []
+        self.cluster_stats = []
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
@@ -61,6 +62,7 @@ class Context:
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
+                return response2
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
