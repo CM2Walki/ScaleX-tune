@@ -5,13 +5,13 @@ import tunex
 
 class Command:
     @staticmethod
-    def create_launch_configuration(client, storage, alias):
+    def create_launch_configuration(client, storage):
         return client.create_launch_configuration(
-            LaunchConfigurationName=('%s-cluster' % alias),
+            LaunchConfigurationName='tunex-cluster',
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
-                ('%s' % alias),
+                'tunex',
             ],
             UserData='',
             InstanceType='t2.micro',
@@ -33,7 +33,7 @@ class Command:
             AssociatePublicIpAddress=True)
 
     @staticmethod
-    def create_sggroup(client, alias):
+    def create_sggroup(client):
         return client.create_security_group(
-            Description=('ScaleX-%s cluster security group' % alias),
-            GroupName=('%s' % alias))
+            Description='ScaleX-tunex cluster security group',
+            GroupName='tunex')

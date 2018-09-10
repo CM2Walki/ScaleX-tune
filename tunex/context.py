@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import boto3
-import QueryData
+import query
 
 
 class Context:
@@ -57,12 +57,12 @@ class Context:
             else:
                 # It doesn't exists
                 # Create sggroup
-                response2 = QueryData.QueryData.create_sggroup(self.ec2)
+                response2 = query.Command.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
                 # Create launch configuration
-                response2 = QueryData.QueryData.create_launch_configuration(self.auto_scaling, storage)
+                response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_launch_configuration (Code: %s)', \
                            response['ResponseMetadata']['HTTPStatusCode']
