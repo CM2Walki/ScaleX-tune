@@ -7,9 +7,7 @@ import boto3
 import query
 
 
-def update(arg):
-    cluster_list = arg[0]
-    cluster_stats = arg[1]
+def update(cluster_list, cluster_stats):
     while True:
         cluster_stats.append("ALIVE AND WELL")
         sleep(1)
