@@ -27,7 +27,7 @@ class DaemonCommands:
                                            self.userStorage.get_awstoken(),
                                            self.userStorage.get_awsregion())
                 # Retrieve running clusters
-                return result
+                return str(result)
                 response = self.userContext.build_context(self.userStorage)
                 return response
             else:
