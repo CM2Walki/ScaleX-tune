@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 
-import requests, sys
+import requests
+import sys
 
 alias = None
 

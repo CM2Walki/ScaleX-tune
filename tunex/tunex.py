@@ -17,7 +17,7 @@ if __name__ == "__main__":
     tunexclient.setup_hostfile()
 
     # Setup tunex daemon (if not already running)
-    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port, alias)
+    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port)
 
     # Argument handling (client)
     if len(sys.argv) == 2:
