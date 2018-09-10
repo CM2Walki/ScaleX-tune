@@ -59,7 +59,7 @@ class Context:
                         if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                             return 'Daemon error whilst contacting executing get_sggroup (Code: %ys)', \
                                    response2['ResponseMetadata']['HTTPStatusCode']
-                        self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
+                        self.security_group = response2["SecurityGroups"][0]['GroupId']
                     break
             else:
                 # It doesn't exists
@@ -73,7 +73,7 @@ class Context:
                     if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                         return 'Daemon error whilst contacting executing get_sggroup (Code: %s)', \
                                 response2['ResponseMetadata']['HTTPStatusCode']
-                    self.security_group = self.ec2.SecurityGroup(response2["SecurityGroups"][0]['GroupId'])
+                    self.security_group = response2["SecurityGroups"][0]['GroupId']
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
