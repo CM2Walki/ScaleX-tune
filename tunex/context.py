@@ -35,6 +35,7 @@ class Context:
         self.cluster_stats = []
         self.updater = Thread(target=update,
                               args=(self.cluster_list, self.cluster_stats))  # Note: We are passing references!
+        self.updater.daemon = True
         self.updater.start()
         self.updater.join()
 
