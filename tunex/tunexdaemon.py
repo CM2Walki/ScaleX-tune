@@ -35,9 +35,8 @@ class V1View(FlaskView):
         return commandList.setup_user(username)
 
     @route('/cluster_status')
-    def setup_user(self):
-        username = str(request.args.get('username'))
-        return commandList.setup_user(username)
+    def cluster_status(self):
+        return commandList.cluster_status()
 
 class TunexDaemon(Daemon):
     app = None

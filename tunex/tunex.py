@@ -88,6 +88,17 @@ if __name__ == "__main__":
             print 'Setting up %s' % sys.argv[3]
             response = tunexclient.setup_user(sys.argv[3])
             print response
+        elif 'cluster' == sys.argv[1] and 'status' == sys.argv[2]:
+            if '--all' == sys.argv[3]:
+                print 'Cluster Status for all running clusters:\n:'
+                response = tunexclient.cluster_status()
+                print response
+            else:
+                print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
+                print 'Usage: %s %s %s [OPTIONS] [CLUSTER]\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
+                print 'Retrieve the status and metrics of a or all running cluster/s\n'
+                print 'Options:'
+                print '  --all      Displays all running clusters and their metrics'
         sys.exit(0)
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
