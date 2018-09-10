@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
+import tunex
 
-class QueryData:
+
+class Command:
     @staticmethod
     def create_launch_configuration(client, storage):
         return client.create_launch_configuration(
-            LaunchConfigurationName='tunex-cluster',
+            LaunchConfigurationName=('%s-cluster' % tunex.alias),
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
-                'tunex',
+                ('%s' % tunex.alias),
             ],
             UserData='',
             InstanceType='t2.micro',
@@ -33,5 +35,5 @@ class QueryData:
     @staticmethod
     def create_sggroup(client):
         return client.create_security_group(
-            Description='ScaleX-tunex cluster security group',
-            GroupName='tunex')
+            Description=('ScaleX-%s cluster security group' % tunex.alias),
+            GroupName=('%s' % tunex.alias))

@@ -4,19 +4,21 @@ import sys
 from tunexdaemon import TunexDaemon
 from tunexclient import TunexClient
 
-if __name__ == "__main__":
-    # Setup variables
-    alias = 'tunex'
-    api = 'api/v1/'
-    host = 'localhost'
-    port = 8081
 
+# Setup variables
+alias = 'tunex'
+api = 'api/v1/'
+host = 'localhost'
+port = 8081
+
+
+if __name__ == "__main__":
     # Setup tunexclient
     tunexclient = TunexClient(alias, port, api)
     tunexclient.setup_hostfile()
 
     # Setup tunexdaemon (if not already running)
-    tunexdaemon = TunexDaemon('/tmp/tunex-daemon.pid', 'TunexAPI', host, port)
+    tunexdaemon = TunexDaemon('/tmp/%s-daemon.pid' % alias, 'TunexAPI', host, port)
 
     # Argument handling (client)
     if len(sys.argv) == 2:
@@ -31,7 +33,7 @@ if __name__ == "__main__":
             print 'Usage: %s %s [USERNAME]\n' % (sys.argv[0], sys.argv[1])
             print 'Fetch the AWS data from the ScaleX database for [USERNAME]\n'
             print 'Options:'
-            print '  --force      Reinitialize tunex with provided user'
+            print '  --force      Reinitialize %s with provided user', alias
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
@@ -79,7 +81,7 @@ if __name__ == "__main__":
                 response = tunexclient.setup_user(sys.argv[2])
                 print response
             else:
-                print 'tunex already setup for user %s\n' % response
+                print '%s already setup for user %s\n' % (alias, response)
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)
@@ -92,9 +94,9 @@ if __name__ == "__main__":
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
-        print '  start		Starts the tunex-daemon'
-        print '  stop		Stops the tunex-daemon'
-        print '  restart	Restarts the tunex-daemon'
+        print '  start		Starts the %s-daemon' % alias
+        print '  stop		Stops the %s-daemon' % alias
+        print '  restart	Restarts the %s-daemon' % alias
         print '  setup		Fetches AWS information from the ScaleX database'
         print '  cluster	Controls and Creates AWS autoscaling clusters'
         sys.exit(2)

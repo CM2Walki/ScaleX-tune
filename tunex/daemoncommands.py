@@ -35,6 +35,18 @@ class DaemonCommands:
         else:
             return 'User setup failed! Username not found in ScaleX Database'
 
+    def cluster_status(self):
+        return "TODO"
+
+    def cluster_run(self):
+        return "TODO"
+
+    def cluster_remove(self):
+        return "TODO"
+
+    def cluster_change(self):
+        return "TODO"
+
     def get_active_user(self):
         result = self.userStorage.get_username()
         if result:
