@@ -12,6 +12,7 @@ def update(cluster_list, cluster_stats):
         cluster_stats.append("ALIVE AND WELL")
         sleep(1)
 
+
 class Context:
     def __init__(self, awssecret, awstoken, awsregion, awssubnet):
         self.session = boto3.session.Session()
@@ -33,11 +34,11 @@ class Context:
         self.awssubnet = awssubnet
         self.cluster_list = []
         self.cluster_stats = []
-        self.updater = Thread(target=update,
+        updater = Thread(target=update,
                               args=(self.cluster_list, self.cluster_stats))  # Note: We are passing references!
-        self.updater.daemon = True
-        self.updater.start()
-        self.updater.join()
+        updater.daemon = True
+        updater.start()
+        updater.join()
 
     # Retrieve active clusters created by tunex in the past
     def build_context(self, storage):
