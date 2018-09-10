@@ -42,3 +42,23 @@ class Command:
     def get_sggroup(ec2):
         return ec2.describe_security_groups(
             GroupNames=['tunex'])
+
+    # TODO: Make Security Group port rules dependent on the k8s deployments
+    @staticmethod
+    def set_sggroup_access(ec2, security_group):
+        return ec2.authorize_security_group_ingress(
+            GroupId=str(security_group),
+            IpPermissions=[
+                {'IpProtocol': 'tcp',
+                 'FromPort': 443,
+                 'ToPort': 443,
+                 'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                {'IpProtocol': 'tcp',
+                 'FromPort': 80,
+                 'ToPort': 80,
+                 'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                {'IpProtocol': 'tcp',
+                 'FromPort': 22,
+                 'ToPort': 22,
+                 'IpRanges': [{'CidrIp': '0.0.0.0/0'}]}
+            ])

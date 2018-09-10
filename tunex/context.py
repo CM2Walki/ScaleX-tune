@@ -54,6 +54,7 @@ class Context:
                 if str.startswith(str(s['LaunchConfigurationName']), 'tunex-cluster'):
                     answer += '\nFound tunex-cluster launch configuration'
                     # We found it, it is already created
+                    # Get security group id
                     if not self.security_group:
                         response2 = query.Command.get_sggroup(self.ec2)
                         if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
@@ -62,18 +63,23 @@ class Context:
                         self.security_group = response2["SecurityGroups"][0]['GroupId']
                     break
             else:
-                # It doesn't exists
+                # It doesn't exist
                 # Create sggroup
                 response2 = query.Command.create_sggroup(self.ec2)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                     return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                            response2['ResponseMetadata']['HTTPStatusCode']
+                # Get security group id
                 if not self.security_group:
                     response2 = query.Command.get_sggroup(self.ec2)
                     if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                         return 'Daemon error whilst contacting executing get_sggroup (Code: %s)', \
                                 response2['ResponseMetadata']['HTTPStatusCode']
                     self.security_group = response2["SecurityGroups"][0]['GroupId']
+                    response2 = query.Command.set_sggroup_access(self.ec2, self.security_group)
+                    if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                        return 'Daemon error whilst contacting executing set_sggroup_access (Code: %s)', \
+                                response2['ResponseMetadata']['HTTPStatusCode']
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage, self.security_group)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
