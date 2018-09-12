@@ -34,12 +34,12 @@ class Command:
     def create_sggroup(ec2):
         return ec2.create_security_group(
             Description='scalectl cluster security group',
-            GroupName='tunex')
+            GroupName='scalectl')
 
     @staticmethod
     def get_sggroup(ec2):
         return ec2.describe_security_groups(
-            GroupNames=['tunex'])
+            GroupNames=['scalectl'])
 
     # TODO: Make Security Group port rules dependent on the k8s deployments of each cluster
     @staticmethod
