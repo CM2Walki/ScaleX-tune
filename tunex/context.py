@@ -30,7 +30,6 @@ class Context:
                                        region_name=userstorage.get_awsregion(),
                                        use_ssl=False)
         self.userstorage = userstorage
-        self.awssubnet1 = userstorage.get_awssubnetid1()
         self.awssubnet2 = userstorage.get_awssubnetid2()
         self.mongodbORM = mongodb
         self.security_group = None
