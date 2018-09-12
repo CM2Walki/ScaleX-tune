@@ -23,7 +23,6 @@ class DaemonCommands:
                 self.userStorage.set_awstoken(result["awstoken"])
                 self.userStorage.set_awsregion(result["awsregion"])
                 self.userStorage.set_awspubkeyname(result["awskeyname"])
-                self.userStorage.set_awssubnetid1(result["awssubnetid1"])
                 self.userStorage.set_awssubnetid2(result["awssubnetid2"])
                 # Setup AWS connection and available resources
                 self.userContext = Context(self.userStorage, self.mongodbORM)
