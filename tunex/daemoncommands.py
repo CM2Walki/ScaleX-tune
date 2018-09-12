@@ -16,7 +16,7 @@ class DaemonCommands:
         if result is not None:
             # Check if we have the fields we need
             if result["username"] and result["awssecret"] and result["awstoken"] \
-                    and result["awsregion"] and result["awskeyname"] and result["awssubnetid1"] and result["awssubnetid2"]:
+                    and result["awsregion"] and result["awskeyname"] and result["awssubnetid2"]:
                 # Setup user
                 self.userStorage.set_username(result["username"])
                 self.userStorage.set_awssecret(result["awssecret"])
