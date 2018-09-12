@@ -36,7 +36,7 @@ class Context:
         self.security_group = None
         self.cluster_list = []
         self.cluster_stats = []
-        self.update = Updater(5, self.cluster_list, self.cluster_stats, self.auto_scaling, self.ec2, self.elb)
+        #self.update = Updater(5, self.cluster_list, self.cluster_stats, self.auto_scaling, self.ec2, self.elb)
 
     # Retrieve active clusters created by scalectl in the past
     def build_context(self, storage):

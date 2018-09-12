@@ -3,7 +3,6 @@
 from pymongo import MongoClient
 
 
-
 class MongoDatabase:
     def __init__(self, host, port):
         self.mongoclient = None

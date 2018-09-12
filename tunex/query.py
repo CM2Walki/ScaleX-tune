@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import scalectl
-
 
 class Command:
     @staticmethod
