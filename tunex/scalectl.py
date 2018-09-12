@@ -20,7 +20,7 @@ if __name__ == "__main__":
     scalectldaemon = ScaleCtlDaemon('/tmp/scalectl-daemon.pid', 'ScaleAPI', host, port)
 
     # Argument handling (client)
-    if len(sys.argv) == 2:<
+    if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             scalectldaemon.start()
         elif 'stop' == sys.argv[1]:
