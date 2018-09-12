@@ -6,7 +6,7 @@ class Command:
     def create_launch_configuration(autoscaling, storage, security_group):
         return autoscaling.create_launch_configuration(
             LaunchConfigurationName='scalectl-cluster',
-            ImageId='ami-027583e616ca104df',
+            ImageId='ami-046f153631cafafdb',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
                 str(security_group),
