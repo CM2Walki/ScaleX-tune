@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-import tunex
+import scalectl
 
 
 class Command:
     @staticmethod
     def create_launch_configuration(autoscaling, storage, security_group):
         return autoscaling.create_launch_configuration(
-            LaunchConfigurationName='tunex-cluster',
+            LaunchConfigurationName='scalectl-cluster',
             ImageId='ami-027583e616ca104df',
             KeyName=storage.get_awspubkeyname(),
             SecurityGroups=[
@@ -35,7 +35,7 @@ class Command:
     @staticmethod
     def create_sggroup(ec2):
         return ec2.create_security_group(
-            Description='ScaleX-tunex cluster security group',
+            Description='scalectl cluster security group',
             GroupName='tunex')
 
     @staticmethod

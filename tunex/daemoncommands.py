@@ -15,37 +15,40 @@ class DaemonCommands:
         result = self.mongodbORM.get_user_info_from_name(username)
         if result is not None:
             # Check if we have the fields we need
-            if result["username"] and result["awssecret"] and result["awstoken"] and result["awsregion"] and result["awskeyname"] and result["awssubnetid2"]:
+            if result["username"] and result["awssecret"] and result["awstoken"] \
+                    and result["awsregion"] and result["awskeyname"] and result["awssubnetid1"] and result["awssubnetid2"]:
                 # Setup user
                 self.userStorage.set_username(result["username"])
                 self.userStorage.set_awssecret(result["awssecret"])
                 self.userStorage.set_awstoken(result["awstoken"])
                 self.userStorage.set_awsregion(result["awsregion"])
                 self.userStorage.set_awspubkeyname(result["awskeyname"])
-                self.userStorage.set_awssubnetid(result["awssubnetid2"])
+                self.userStorage.set_awssubnetid1(result["awssubnetid1"])
+                self.userStorage.set_awssubnetid2(result["awssubnetid2"])
                 # Setup AWS connection and available resources
-                self.userContext = Context(self.userStorage.get_awssecret(),
-                                           self.userStorage.get_awstoken(),
-                                           self.userStorage.get_awsregion(),
-                                           self.userStorage.get_awssubnetid())
+                self.userContext = Context(self.userStorage, self.mongodbORM)
                 # Retrieve running clusters
                 response = self.userContext.build_context(self.userStorage)
                 return response
             else:
                 return 'User setup not complete in ScaleX Database!\nMake sure the fields username, ' \
-                       'awssecret, awstoken, awsregion, awssubnetid2 and awskeyname are setup for user %s' % username
+                       'awssecret, awstoken, awsregion, awssubnetid1, awssubnetid2 and awskeyname are setup for user %s' % username
         else:
             return 'User setup failed! Username not found in ScaleX Database'
 
-    def cluster_status(self):
+    def cluster_status(self, name=None, ):
         if self.userContext:
             return "Active clusters: %s\n%s" % (len(self.userContext.get_cluster_list()),
                                                 str(self.userContext.get_cluster_stats()))
         else:
-            return "No User Context set up! Did you run tunex setup USERNAME?"
+            return "No User Context set up! Did you run scalectl setup USERNAME?"
 
     def cluster_run(self):
-        return "TODO"
+        if self.userContext:
+            return "Active clusters: %s\n%s" % (len(self.userContext.get_cluster_list()),
+                                                str(self.userContext.get_cluster_stats()))
+        else:
+            return "No User Context set up! Did you run scalectl setup USERNAME?"
 
     def cluster_remove(self):
         return "TODO"

@@ -10,10 +10,12 @@ class MongoDatabase:
         self.host = host
         self.port = port
 
-    def get_user_info_from_name(self, username):
+    def initdb(self):
         if not self.mongoclient:
             self.mongoclient = MongoClient(self.host, self.port)
 
+    def get_user_info_from_name(self, username):
+        self.initdb()
         db = self.mongoclient['dbUsersData']
         collection = db['usersData']
         cursor = collection.find({"userInfo.username": username})

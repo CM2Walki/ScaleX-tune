@@ -8,7 +8,8 @@ class Storage:
         self.awstoken = None
         self.awsregion = None
         self.awspubkeyname = None
-        self.awssubnetid = None
+        self.awssubnetid1 = None
+        self.awssubnetid2 = None
 
     def get_username(self):
         return self.username
@@ -25,8 +26,11 @@ class Storage:
     def get_awspubkeyname(self):
         return self.awspubkeyname
 
-    def get_awssubnetid(self):
-        return self.awssubnetid
+    def get_awssubnetid1(self):
+        return self.awssubnetid1
+
+    def get_awssubnetid2(self):
+        return self.awssubnetid2
 
     def set_username(self, username):
         self.username = username
@@ -43,5 +47,8 @@ class Storage:
     def set_awspubkeyname(self, awspubkeyname):
         self.awspubkeyname = awspubkeyname
 
-    def set_awssubnetid(self, awssubnetid):
-        self.awssubnetid = awssubnetid
+    def set_awssubnetid1(self, awssubnetid1):
+        self.awssubnetid1 = awssubnetid1
+
+    def set_awssubnetid2(self, awssubnetid2):
+        self.awssubnetid2 = awssubnetid2

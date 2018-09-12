@@ -38,8 +38,12 @@ class V1View(FlaskView):
     def cluster_status(self):
         return commandList.cluster_status()
 
+    @route('/cluster_run')
+    def cluster_run(self):
+        return commandList.cluster_status()
 
-class TunexDaemon(Daemon):
+
+class ScaleCtlDaemon(Daemon):
     app = None
 
     def __init__(self, pidfile, name, host, port):
