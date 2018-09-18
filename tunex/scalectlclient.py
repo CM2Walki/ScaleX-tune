@@ -15,10 +15,10 @@ class ScaleCtlClient:
     def setup_hostfile(self):
         with open("/etc/hosts", "r+") as f:
             for line in f:
-                if '127.0.0.1\tscalectl' in line:
+                if '127.0.0.1\tscalectl\n' in line:
                     break
             else:
-                f.write('127.0.0.1\tscalectl')
+                f.write('127.0.0.1\tscalectl\n')
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)

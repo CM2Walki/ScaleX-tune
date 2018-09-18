@@ -37,7 +37,7 @@ if __name__ == "__main__":
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
             print '  run\t\tCreates a new AWS autoscaling group that runs the provided k8s deployment'
-            print '  remove\t\tRemoves an AWS autoscaling group'
+            print '  remove\tRemoves an AWS autoscaling group'
         else:
             print "Unknown command"
             sys.exit(2)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 print 'Options:'
                 print '  --name\t\t\tSet a name for the new cluster'
                 print '  --size\t\t\tSet the initial size of the cluster'
-                print '  --target\t\t\tSet the target port of the cluster'
+                print '  --target\t\t\tSet the target domain of the cluster'
                 print '  --function\t\t\tSet the load function (x^2)'
             elif 'remove' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         print 'Commands: '
         print '  start\t\t\tStarts the scalectl-daemon'
         print '  stop\t\t\tStops the scalectl-daemon'
-        print '  restart\t\t\tRestarts the scalectl-daemon'
+        print '  restart\t\tRestarts the scalectl-daemon'
         print '  setup\t\t\tFetches AWS information from the ScaleX database'
-        print '  cluster\t\t\tControls and Creates AWS autoscaling clusters'
+        print '  cluster\t\tControls and Creates AWS autoscaling clusters'
         sys.exit(2)
