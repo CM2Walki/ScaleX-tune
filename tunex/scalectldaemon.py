@@ -34,13 +34,9 @@ class V1View(FlaskView):
         username = str(request.args.get('username'))
         return commandList.setup_user(username)
 
-    @route('/cluster_status')
-    def cluster_status(self):
-        return commandList.cluster_status()
-
     @route('/cluster_run')
     def cluster_run(self):
-        return commandList.cluster_status()
+        return commandList.cluster_run()
 
 
 class ScaleCtlDaemon(Daemon):
