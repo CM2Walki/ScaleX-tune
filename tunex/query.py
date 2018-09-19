@@ -13,8 +13,7 @@ class Command:
             SecurityGroups=[
                 str(security_group),
             ],
-            UserData="""#!/bin/bash
-            docker run -d -e TARGET="awsloadbal-195663314.eu-central-1.elb.amazonaws.com" -e FUNCTION="(-1)*(x-10)^2+100" --name=benchmark walki/benchmarkcontainer""",
+            UserData="""#!/bin/bash\ndocker run -d -e TARGET="awsloadbal-195663314.eu-central-1.elb.amazonaws.com" -e FUNCTION="(-1)*(x-10)^2+100" --name=benchmark walki/benchmarkcontainer""",
             InstanceType='t2.micro',
             InstanceMonitoring={
                 'Enabled': False
