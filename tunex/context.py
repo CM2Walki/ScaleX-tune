@@ -77,7 +77,7 @@ class Context:
             else:
                 # It doesn't exist
                 # Create security group
-                response2 = query.Command.create_sggroup(self.ec2)
+                response_sggroup = query.Command.create_sggroup(self.ec2)
                 #if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                 #    return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
                 #           response2['ResponseMetadata']['HTTPStatusCode']
@@ -89,10 +89,11 @@ class Context:
                                 response2['ResponseMetadata']['HTTPStatusCode']
                     self.security_group = response2["SecurityGroups"][0]['GroupId']
                     # Setup security group port rules
-                    response2 = query.Command.set_sggroup_access(self.ec2, self.security_group)
-                    if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
-                        return 'Daemon error whilst contacting executing set_sggroup_access (Code: %s)', \
-                                response2['ResponseMetadata']['HTTPStatusCode']
+                    if not response_sggroup:
+                        response2 = query.Command.set_sggroup_access(self.ec2, self.security_group)
+                        if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                            return 'Daemon error whilst contacting executing set_sggroup_access (Code: %s)', \
+                                    response2['ResponseMetadata']['HTTPStatusCode']
                 # Create launch configuration
                 response2 = query.Command.create_launch_configuration(self.auto_scaling, storage, self.security_group)
                 if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
