@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from botocore.exceptions import ClientError
+
 
 class Command:
     @staticmethod
@@ -22,9 +24,13 @@ class Command:
 
     @staticmethod
     def create_sggroup(ec2):
-        return ec2.create_security_group(
+        try:
+            response = ec2.create_security_group(
             Description='scalectl cluster security group',
             GroupName='scalectl')
+            return response
+        except ClientError as e:
+            return []
 
     @staticmethod
     def get_sggroup(ec2):
