@@ -11,19 +11,9 @@ class Command:
             SecurityGroups=[
                 str(security_group),
             ],
-            UserData='',
+            UserData="""#!/bin/bash
+            docker run -d -e TARGET="awsloadbal-195663314.eu-central-1.elb.amazonaws.com" -e FUNCTION="(-1)*(x-10)^2+100" --name=benchmark walki/benchmarkcontainer""",
             InstanceType='t2.micro',
-            BlockDeviceMappings=[
-                {
-                    'DeviceName': '/dev/sda1',
-                    'Ebs': {
-                        'SnapshotId': 'snap-0a9bff332c1cc9f5a',
-                        'VolumeSize': 8,
-                        'VolumeType': 'gp2',
-                        'DeleteOnTermination': True,
-                    },
-                },
-            ],
             InstanceMonitoring={
                 'Enabled': False
             },

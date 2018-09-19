@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 print '  --name\t\t\tSet a name for the new cluster'
                 print '  --size\t\t\tSet the initial size of the cluster'
                 print '  --target\t\t\tSet the target domain of the cluster'
-                print '  --function\t\t\tSet the load function (x^2)'
+                print '  --function\t\t\tSet the load function (Example: x^2)'
             elif 'remove' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Usage: %s %s %s [OPTIONS] [CLUSTER] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
