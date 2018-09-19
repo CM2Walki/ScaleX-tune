@@ -10,7 +10,7 @@ if __name__ == "__main__":
     alias = 'scalectl'
     api = 'api/v1/'
     host = 'localhost'
-    port = 8081
+    port = 8085
 
     # Setup scalectl client
     scalectlclient = ScaleCtlClient(alias, port, api)
