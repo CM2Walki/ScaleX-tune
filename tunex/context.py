@@ -89,7 +89,7 @@ class Context:
                                 response2['ResponseMetadata']['HTTPStatusCode']
                     self.security_group = response2["SecurityGroups"][0]['GroupId']
                     # Setup security group port rules
-                    if not response_sggroup:
+                    if len(response_sggroup) != 0:
                         response2 = query.Command.set_sggroup_access(self.ec2, self.security_group)
                         if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
                             return 'Daemon error whilst contacting executing set_sggroup_access (Code: %s)', \
