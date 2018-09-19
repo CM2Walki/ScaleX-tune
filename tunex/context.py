@@ -78,9 +78,9 @@ class Context:
                 # It doesn't exist
                 # Create security group
                 response2 = query.Command.create_sggroup(self.ec2)
-                if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
-                    return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
-                           response2['ResponseMetadata']['HTTPStatusCode']
+                #if not int(response2['ResponseMetadata']['HTTPStatusCode']) == 200:
+                #    return 'Daemon error whilst contacting executing create_sggroup (Code: %s)', \
+                #           response2['ResponseMetadata']['HTTPStatusCode']
                 # Get security group id
                 if not self.security_group:
                     response2 = query.Command.get_sggroup(self.ec2)
