@@ -3,6 +3,7 @@
 
 import requests
 import sys
+import base64
 
 
 class ScaleCtlClient:
@@ -37,7 +38,7 @@ class ScaleCtlClient:
 
     def cluster_run(self, timestart, timeend, timestep, target, func, clustersize, instancetype):
         try:
-            response = requests.get(self.build_request('cluster_run'), params={'timestart': str(timestart), 'timeend': str(timeend), 'timestep': str(timestep), 'target': str(target), 'func': str(func), 'clustersize': str(clustersize), 'instancetype': str(instancetype)})
+            response = requests.get(self.build_request('cluster_run'), params={'timestart': str(timestart), 'timeend': str(timeend), 'timestep': str(timestep), 'target': str(target), 'func': str(base64.b64encode(func)), 'clustersize': str(clustersize), 'instancetype': str(instancetype)})
         except requests.exceptions.ConnectionError:
             print 'Unable to contact HTTP server! Is the Daemon running?'
             sys.exit(2)

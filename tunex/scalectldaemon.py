@@ -2,6 +2,7 @@
 
 
 import gevent.monkey
+import base64
 from gevent.pywsgi import WSGIServer
 from daemon import Daemon
 from mongodb import MongoDatabase
@@ -40,7 +41,7 @@ class V1View(FlaskView):
         timeend = str(request.args.get('timeend'))
         timestep = str(request.args.get('timestep'))
         target = str(request.args.get('target'))
-        func = str(request.args.get('func'))
+        func = str(base64.b64decode(request.args.get('func')))
         clustersize = str(request.args.get('clustersize'))
         instancetype = str(request.args.get('instancetype'))
         return commandList.cluster_run(timestart, timeend, timestep, target, func, clustersize, instancetype)
