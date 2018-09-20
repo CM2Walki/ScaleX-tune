@@ -36,9 +36,9 @@ class DaemonCommands:
         else:
             return 'User setup failed! Username not found in ScaleX Database'
 
-    def cluster_run(self, timestart, timeend, timestep, target, function, clustersize, instancetype):
+    def cluster_run(self, timestart, timeend, timestep, target, func, clustersize, instancetype):
         if self.userContext:
-            result = self.userContext.run_cluster(timestart, timeend, timestep, target, function, clustersize, instancetype)
+            result = self.userContext.run_cluster(timestart, timeend, timestep, target, func, clustersize, instancetype)
             return result
         else:
             return "No User Context set up! Did you run scalectl setup USERNAME?"

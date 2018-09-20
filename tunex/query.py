@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 
 class Command:
     @staticmethod
-    def create_launch_configuration(autoscaling, storage, security_group, timestart=0, timeend=2147483647, target="1.2.3.4", timestep=60, function="(-1)*(x-10)^2+100", instancetype="t2.micro"):
+    def create_launch_configuration(autoscaling, storage, security_group, timestart=0, timeend=2147483647, target="1.2.3.4", timestep=60, func="(-1)*(x-10)^2+100", instancetype="t2.micro"):
         return autoscaling.create_launch_configuration(
             LaunchConfigurationName='scalectl-cluster',
             ImageId='ami-046f153631cafafdb',
@@ -17,7 +17,7 @@ class Command:
                      """-e TIMEEND=""" + str(timeend) +
                      """-e TIMESTEP=""" + str(timestep) +
                      """-e TARGET=""" + str(target) +
-                     """-e FUNCTION=""" + str(function) + """ --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
+                     """-e FUNCTION=""" + str(func) + """ --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
             InstanceType=instancetype,
             InstanceMonitoring={
                 'Enabled': False
