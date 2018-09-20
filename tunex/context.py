@@ -115,7 +115,7 @@ class Context:
             return 'Daemon error whilst contacting executing run_cluster (Code: %s)', \
                    response['ResponseMetadata']['HTTPStatusCode']
         answer += '\nStarting new auto scaling cluster'
-        response = query.Command.create_auto_scaling_group(self.auto_scaling, clustersize, instancetype)
+        response = query.Command.create_auto_scaling_group(self.auto_scaling, clustersize, self.userstorage)
         if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             return 'Daemon error whilst contacting executing create_auto_scaling_group (Code: %s)', \
                    response['ResponseMetadata']['HTTPStatusCode']
