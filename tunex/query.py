@@ -48,8 +48,8 @@ class Command:
         return autoscaling.create_auto_scaling_group(
             AutoScalingGroupName='scalectl-cluster-benchmark',
             LaunchConfigurationName='scalectl-cluster',
-            MinSize=size,
-            MaxSize=size,
+            MinSize=int(size),
+            MaxSize=int(size),
             DefaultCooldown=0,
             VPCZoneIdentifier=str(storage.get_awssubnetid2())
         )
