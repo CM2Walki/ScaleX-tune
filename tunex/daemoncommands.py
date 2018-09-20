@@ -44,10 +44,11 @@ class DaemonCommands:
             return "No User Context set up! Did you run scalectl setup USERNAME?"
 
     def cluster_remove(self):
-        return "TODO"
-
-    def cluster_change(self):
-        return "TODO"
+        if self.userContext:
+            result = self.userContext.delete_cluster()
+            return result
+        else:
+            return "No User Context set up! Did you run scalectl setup USERNAME?"
 
     def get_active_user(self):
         result = self.userStorage.get_username()

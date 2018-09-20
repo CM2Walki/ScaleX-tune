@@ -51,11 +51,8 @@ if __name__ == "__main__":
                 print '\t\t\t\t\t\tTIMESTART TIMEEND TIMESTEP TARGET FUNCTION CLUSTERSIZE INSTANCETYPE'
                 print 'Creates a new autoscaling benchmark cluster with the provided parameters on AWS\n'
             elif 'remove' == sys.argv[2]:
-                print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Usage: %s %s %s [OPTIONS] [CLUSTER] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Removes a given cluster or removes all of them\n'
-                print 'Options:'
-                print '  --all\t\t\tRemove all clusters'
+                response = scalectlclient.cluster_remove()
+                print response
             else:
                 print "Unknown command"
                 sys.exit(2)

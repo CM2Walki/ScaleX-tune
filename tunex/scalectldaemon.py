@@ -45,6 +45,10 @@ class V1View(FlaskView):
         instancetype = str(request.args.get('instancetype'))
         return commandList.cluster_run(timestart, timeend, timestep, target, func, clustersize, instancetype)
 
+    @route('/cluster_remove')
+    def cluster_remove(self):
+        return commandList.cluster_remove()
+
 
 class ScaleCtlDaemon(Daemon):
     app = None

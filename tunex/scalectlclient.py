@@ -47,6 +47,18 @@ class ScaleCtlClient:
             print 'Daemon encountered an error (Code: %s)' % response.status_code
             sys.exit(2)
 
+    def cluster_remove(self):
+        try:
+            response = requests.get(self.build_request('cluster_remove'))
+        except requests.exceptions.ConnectionError:
+            print 'Unable to contact HTTP server! Is the Daemon running?'
+            sys.exit(2)
+        if response.status_code == 200:
+            return response.text
+        else:
+            print 'Daemon encountered an error (Code: %s)' % response.status_code
+            sys.exit(2)
+
     def setup_user(self, username):
         try:
             response = requests.get(self.build_request('setup_user'), params={'username': str(username)})
