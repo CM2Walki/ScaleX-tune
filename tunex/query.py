@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 
 class Command:
     @staticmethod
-    def create_launch_configuration(autoscaling, storage, security_group):
+    def create_launch_configuration(autoscaling, storage, security_group, timestart=0, timeend=2147483647, target="1.2.3.4", timestep=60, function="(-1)*(x-10)^2+100", instancetype="t2.micro"):
         return autoscaling.create_launch_configuration(
             LaunchConfigurationName='scalectl-cluster',
             ImageId='ami-046f153631cafafdb',
@@ -13,8 +13,12 @@ class Command:
             SecurityGroups=[
                 str(security_group),
             ],
-            UserData="""#!/bin/bash\ndocker run -d -e TARGET="awsloadbal-195663314.eu-central-1.elb.amazonaws.com" -e FUNCTION="(-1)*(x-10)^2+100" --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
-            InstanceType='t2.micro',
+            UserData="""#!/bin/bash\ndocker run -d -e TIMESTART=""" + str(timestart) +
+                     """-e TIMEEND=""" + str(timeend) +
+                     """-e TIMESTEP=""" + str(timestep) +
+                     """-e TARGET=""" + str(target) +
+                     """-e FUNCTION=""" + str(function) + """ --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
+            InstanceType=instancetype,
             InstanceMonitoring={
                 'Enabled': False
             },
@@ -22,11 +26,37 @@ class Command:
             AssociatePublicIpAddress=True)
 
     @staticmethod
+    def delete_launch_configuration(autoscaling):
+        try:
+            Command.delete_auto_scaling_group(autoscaling)
+            return autoscaling.delete_launch_configuration(
+                LaunchConfigurationName='scalectl-cluster')
+        except ClientError as e:
+            return []
+
+    @staticmethod
+    def delete_auto_scaling_group(autoscaling):
+        return autoscaling.delete_auto_scaling_group(
+            AutoScalingGroupName='scalectl-cluster-benchmark',
+            ForceDelete=True)
+
+    @staticmethod
+    def create_auto_scaling_group(autoscaling, size, storage):
+        return autoscaling.create_auto_scaling_group(
+            AutoScalingGroupName='scalectl-cluster-benchmark',
+            LaunchConfigurationName='scalectl-cluster',
+            MinSize=size,
+            MaxSize=size,
+            DefaultCooldown=0,
+            VPCZoneIdentifier=storage.get_awssubnetid2()
+        )
+
+    @staticmethod
     def create_sggroup(ec2):
         try:
             response = ec2.create_security_group(
-            Description='scalectl cluster security group',
-            GroupName='scalectl')
+                Description='scalectl cluster security group',
+                GroupName='scalectl')
             return response
         except ClientError as e:
             return []

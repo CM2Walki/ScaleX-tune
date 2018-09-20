@@ -106,6 +106,22 @@ class Context:
             return answer
         return answer
 
+    def run_cluster(self, timestart, timeend, timestep, target, function, clustersize, instancetype):
+        answer = "Deleting old launch config"
+        query.Command.delete_launch_configuration(self.auto_scaling)
+        answer += '\nCreating new launch config'
+        response = query.Command.create_launch_configuration(self.auto_scaling, self.userstorage, self.security_group)
+        if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
+            return 'Daemon error whilst contacting executing run_cluster (Code: %s)', \
+                   response['ResponseMetadata']['HTTPStatusCode']
+        answer += '\nStarting new auto scaling cluster'
+        response = query.Command.create_auto_scaling_group(self.auto_scaling, clustersize, instancetype)
+        if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
+            return 'Daemon error whilst contacting executing create_auto_scaling_group (Code: %s)', \
+                   response['ResponseMetadata']['HTTPStatusCode']
+        answer += '\nSuccessfully started cluster'
+        return answer
+
     def get_cluster_list(self):
         return self.cluster_list
 

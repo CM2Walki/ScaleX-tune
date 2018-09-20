@@ -36,7 +36,14 @@ class V1View(FlaskView):
 
     @route('/cluster_run')
     def cluster_run(self):
-        return commandList.cluster_run()
+        timestart = str(request.args.get('timestart'))
+        timeend = str(request.args.get('timeend'))
+        timestep = str(request.args.get('timestep'))
+        target = str(request.args.get('target'))
+        func = str(request.args.get('func'))
+        clustersize = str(request.args.get('clustersize'))
+        instancetype = str(request.args.get('instancetype'))
+        return commandList.cluster_run(timestart, timeend, timestep, target, func, clustersize, instancetype)
 
 
 class ScaleCtlDaemon(Daemon):

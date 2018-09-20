@@ -36,7 +36,7 @@ if __name__ == "__main__":
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
-            print '  run\t\tCreates a new AWS autoscaling group that runs the provided k8s deployment'
+            print '  run\t\tCreates a new AWS autoscaling group that runs a benchmark against the provided target'
             print '  remove\tRemoves an AWS autoscaling group'
         else:
             print "Unknown command"
@@ -46,13 +46,10 @@ if __name__ == "__main__":
         if 'cluster' == sys.argv[1]:
             if 'run' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Usage: %s %s %s [OPTIONS] [DEPLOYMENT]\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Creates a new autoscaling cluster with the provided parameters on AWS\n'
-                print 'Options:'
-                print '  --name\t\t\tSet a name for the new cluster'
-                print '  --size\t\t\tSet the initial size of the cluster'
-                print '  --target\t\t\tSet the target domain of the cluster'
-                print '  --function\t\t\tSet the load function (Example: x^2)'
+                print 'Usage: %s %s %s [ARGUMENTS] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
+                print 'Example: %s %s %s 0 2147483647 60 "1.2.3.4" "(-1)*(x-10)^2+100" 8 t2.micro'
+                print '\t\t\t\t\t\tTIMESTART TIMEEND TIMESTEP TARGET FUNCTION CLUSTERSIZE INSTANCETYPE'
+                print 'Creates a new autoscaling benchmark cluster with the provided parameters on AWS\n'
             elif 'remove' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Usage: %s %s %s [OPTIONS] [CLUSTER] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
@@ -79,6 +76,13 @@ if __name__ == "__main__":
             response = scalectlclient.setup_user(sys.argv[3])
             print response
         sys.exit(0)
+    elif len(sys.argv) > 4:
+        if 'cluster' == sys.argv[1]:
+            if 'run' == sys.argv[2]:
+                print 'Setting up %s' % sys.argv[1]
+                print 'Timestart = %s; Timeend = %s; Timestep = %s; Target = %s; Function = %s; Size = %s; Instancetype: %s\n' % (sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
+                response = scalectlclient.cluster_run(sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
+                print response
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '

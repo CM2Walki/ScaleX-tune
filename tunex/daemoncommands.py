@@ -2,6 +2,7 @@
 
 import namesgenerator # clustername = str(namesgenerator.get_random_name()).replace("_", "")
 from context import Context
+import query
 
 
 class DaemonCommands:
@@ -35,10 +36,10 @@ class DaemonCommands:
         else:
             return 'User setup failed! Username not found in ScaleX Database'
 
-    def cluster_run(self):
+    def cluster_run(self, timestart, timeend, timestep, target, function, clustersize, instancetype):
         if self.userContext:
-            return "Active clusters: %s\n%s" % (len(self.userContext.get_cluster_list()),
-                                                str(self.userContext.get_cluster_stats()))
+            result = self.userContext.cluster_run(self, timestart, timeend, timestep, target, function, clustersize, instancetype)
+            return result
         else:
             return "No User Context set up! Did you run scalectl setup USERNAME?"
 
