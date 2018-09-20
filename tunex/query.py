@@ -29,6 +29,9 @@ class Command:
     def delete_launch_configuration(autoscaling):
         try:
             Command.delete_auto_scaling_group(autoscaling)
+        except ClientError as e:
+            print ""
+        try:
             return autoscaling.delete_launch_configuration(
                 LaunchConfigurationName='scalectl-cluster')
         except ClientError as e:
