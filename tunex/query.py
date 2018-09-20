@@ -17,7 +17,7 @@ class Command:
                      """ -e TIMEEND=""" + str(timeend) +
                      """ -e TIMESTEP=""" + str(timestep) +
                      """ -e TARGET=""" + str(target) +
-                     """ -e FUNCTION=""" + str(func) + """ --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
+                     """ -e FUNCTION=\"""" + str(func) + """\" --name=benchmark walki/benchmarkcontainer\nsudo systemctl stop update-engine""",
             InstanceType=instancetype,
             InstanceMonitoring={
                 'Enabled': False
