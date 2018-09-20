@@ -51,7 +51,7 @@ class Command:
             MinSize=size,
             MaxSize=size,
             DefaultCooldown=0,
-            VPCZoneIdentifier=storage.get_awssubnetid2()
+            VPCZoneIdentifier=str(storage.get_awssubnetid2())
         )
 
     @staticmethod
