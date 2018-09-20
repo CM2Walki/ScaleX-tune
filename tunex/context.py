@@ -122,6 +122,13 @@ class Context:
         answer += '\nSuccessfully started cluster'
         return answer
 
+    def delete_cluster(self):
+        response = query.Command.delete_auto_scaling_group(self.auto_scaling)
+        if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
+            return 'Daemon error whilst contacting executing delete_cluster (Code: %s)', \
+                   response['ResponseMetadata']['HTTPStatusCode']
+        return "Deleted auto scale cluster"
+
     def get_cluster_list(self):
         return self.cluster_list
 
