@@ -106,11 +106,11 @@ class Context:
             return answer
         return answer
 
-    def run_cluster(self, timestart, timeend, timestep, target, function, clustersize, instancetype):
+    def run_cluster(self, timestart, timeend, timestep, target, func, clustersize, instancetype):
         answer = "Deleting old launch config"
         query.Command.delete_launch_configuration(self.auto_scaling)
         answer += '\nCreating new launch config'
-        response = query.Command.create_launch_configuration(self.auto_scaling, self.userstorage, self.security_group)
+        response = query.Command.create_launch_configuration(self.auto_scaling, self.userstorage, self.security_group, timestart, timeend, target, timestep, func, instancetype)
         if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             return 'Daemon error whilst contacting executing run_cluster (Code: %s)', \
                    response['ResponseMetadata']['HTTPStatusCode']

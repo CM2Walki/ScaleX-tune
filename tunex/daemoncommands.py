@@ -38,7 +38,7 @@ class DaemonCommands:
 
     def cluster_run(self, timestart, timeend, timestep, target, function, clustersize, instancetype):
         if self.userContext:
-            result = self.userContext.cluster_run(self, timestart, timeend, timestep, target, function, clustersize, instancetype)
+            result = self.userContext.run_cluster(self, timestart, timeend, timestep, target, function, clustersize, instancetype)
             return result
         else:
             return "No User Context set up! Did you run scalectl setup USERNAME?"

@@ -47,7 +47,7 @@ if __name__ == "__main__":
             if 'run' == sys.argv[2]:
                 print '"%s %s %s" requires at least 1 argument\n' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print 'Usage: %s %s %s [ARGUMENTS] \n' % (sys.argv[0], sys.argv[1], sys.argv[2])
-                print 'Example: %s %s %s 0 2147483647 60 "1.2.3.4" "(-1)*(x-10)^2+100" 8 t2.micro'
+                print 'Example: %s %s %s 0 2147483647 60 "1.2.3.4" "(-1)*(x-10)^2+100" 8 t2.micro' % (sys.argv[0], sys.argv[1], sys.argv[2])
                 print '\t\t\t\t\t\tTIMESTART TIMEEND TIMESTEP TARGET FUNCTION CLUSTERSIZE INSTANCETYPE'
                 print 'Creates a new autoscaling benchmark cluster with the provided parameters on AWS\n'
             elif 'remove' == sys.argv[2]:
