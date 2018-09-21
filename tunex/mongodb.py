@@ -26,15 +26,12 @@ class MongoDatabase:
     def create_perf_data_db(self, username):
         self.initdb()
         db = self.mongoclient['dbPerfData']
-        collection = None
-        if "usersPerfData" in db.collection_names():
-            collection = db['usersPerfData']
-        else:
-            collection = db.create_collection('usersPerfData')
+        if not "usersPerfData" in db.collection_names():
+            db.create_collection('usersPerfData')
+        collection = db['usersPerfData']
         userQuery = {username: str(username)}
         userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
-        cursor = collection.find(userQuery)
-        if cursor.count() == 0:
+        if collection.find(userQuery).count() == 0:
             collection.insert_one(userCol)
 
     def add_latency_datapoint(self, username, latency, timestamp):
