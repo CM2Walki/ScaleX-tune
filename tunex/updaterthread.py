@@ -27,6 +27,7 @@ class Updater(object):
     def run(self):
         self.mongodb.create_perf_data_db(self.username)
         counter = 1
+        probes = 0
         total = 0.0
         while True:
             if not self.stop:
@@ -39,8 +40,12 @@ class Updater(object):
                         total = total + (1000 * (time.time()-start))
                         s.close()
                         counter = 1
+                        probes = probes + 1
                     counter = counter + 1
                 else:
+                    if probes > 0:
+                        total = total / probes
+                        probes = 0
                     self.mongodb.add_latency_datapoint(self.username, total, int(time.time()))
                     total = 0.0
                     counter = 1
