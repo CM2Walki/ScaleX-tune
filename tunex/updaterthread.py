@@ -38,7 +38,6 @@ class Updater(object):
                         s.connect((str(self.target), 80))
                         total = total + (time.time()-start)
                         s.close()
-                        counter += 1
                     else:
                         counter = 1
                         total = 0
@@ -47,7 +46,7 @@ class Updater(object):
                     total = total / counter
                     self.mongodb.add_latency_datapoint(self.username, total, int(time.time()))
                     total = 0
-                    counter = 0
+                    counter = 1
                 time.sleep(self.interval)
             else:
                 break
