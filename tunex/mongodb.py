@@ -29,8 +29,8 @@ class MongoDatabase:
         if not "usersPerfData" in db.collection_names():
             db.create_collection('usersPerfData')
         collection = db['usersPerfData']
-        userQuery = {username: str(username)}
-        userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
+        userQuery = {"username": username}
+        userCol = {"username": username, "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
         if collection.find(userQuery).count() == 0:
             collection.insert_one(userCol)
 
@@ -38,7 +38,7 @@ class MongoDatabase:
         self.initdb()
         db = self.mongoclient['dbPerfData']
         collection = db['usersPerfData']
-        filter = {"username": str(username)}
+        filter = {"username": username}
         userCol = {"$push": {"LatencyDatapoints": {"$each": [{"Timestamp": timestamp, "Average": latency}], "$sort": {"Timestamp": -1}, "$slice": 60}}}
         collection.update_one(filter, userCol)
 
