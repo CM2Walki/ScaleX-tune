@@ -45,7 +45,7 @@ class Updater(object):
                         # Response Time
                         start = time.time()
                         # Make sure to process the headers and the data!
-                        r = requests.get((str(self.target)), stream=True)
+                        r = requests.get('http://' + (str(self.target)), stream=True)
                         for chunk in r.iter_content(chunk_size=1024):
                             print ""
                         total_resp = total_resp + (1000 * (time.time() - start))
@@ -66,7 +66,7 @@ class Updater(object):
                         # Response Time
                         start = time.time()
                         # Make sure to process the headers and the data!
-                        r = requests.get((str(self.target)), stream=True)
+                        r = requests.get('http://' + (str(self.target)), stream=True)
                         for chunk in r.iter_content(chunk_size=1024):
                             print ""
                         total_resp = (1000 * (time.time() - start))
