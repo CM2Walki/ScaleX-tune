@@ -38,7 +38,6 @@ class Updater(object):
                         s.connect((str(self.target), 80))
                         total = total + (1000 * (time.time()-start))
                         s.close()
-                    else:
                         counter = 1
                     counter = counter + 1
                 else:
