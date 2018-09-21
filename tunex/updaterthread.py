@@ -41,7 +41,6 @@ class Updater(object):
                         s.close()
                     else:
                         counter = 1
-                        total = 0.0
                     counter = counter + 1
                 else:
                     total = total / counter
