@@ -3,7 +3,8 @@
 import threading
 import time
 import datetime
-import pyping
+import socket
+
 
 class Updater(object):
     """ Threading class
@@ -26,14 +27,16 @@ class Updater(object):
     def run(self):
         self.mongodb.create_perf_data_db(self.username)
         counter = 0
-        total = 0
+        total = 0.0
         while True:
             if not self.stop:
                 now = datetime.datetime.now()
                 if now.second < 50:
                     if counter < 4:
-                        r = pyping.ping(str(self.target))
-                        total = total + r.avg_rtt
+                        start = time.time()
+                        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        s.connect((str(self.target), 80))
+                        total = total + (time.time()-start)
                         counter += 1
                     else:
                         counter = 0
