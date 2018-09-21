@@ -4,6 +4,7 @@ import threading
 import time
 import datetime
 import socket
+from timeit import default_timer as timer
 
 
 class Updater(object):
@@ -31,12 +32,15 @@ class Updater(object):
         while True:
             if not self.stop:
                 now = datetime.datetime.now()
-                if now.second < 50:
+                if now.second < 59:
                     if counter < 5:
-                        start = time.time()
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        s.settimeout(1)
+                        s_start = timer()
                         s.connect((str(self.target), 80))
-                        total = total + (time.time()-start)
+                        s_stop = timer()
+                        runtime = "%.2f" % (1000 * (s_stop - s_start))
+                        total = total + float(runtime)
                         s.close()
                     else:
                         counter = 1

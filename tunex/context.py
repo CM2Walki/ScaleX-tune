@@ -125,6 +125,7 @@ class Context:
 
     def delete_cluster(self):
         response = query.Command.delete_auto_scaling_group(self.auto_scaling)
+        self.updater.stop()
         if not int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
             return 'Daemon error whilst contacting executing delete_cluster (Code: %s)', \
                    response['ResponseMetadata']['HTTPStatusCode']

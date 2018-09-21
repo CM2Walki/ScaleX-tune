@@ -32,7 +32,7 @@ class MongoDatabase:
         else:
             collection = db.create_collection('usersPerfData')
         userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
-        if collection.collection.count(userCol) == 0:
+        if collection.count(userCol) == 0:
             collection.insert_one(userCol)
 
     def add_latency_datapoint(self, username, latency, timestamp):
