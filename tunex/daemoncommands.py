@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import namesgenerator # clustername = str(namesgenerator.get_random_name()).replace("_", "")
 from context import Context
 import query
 

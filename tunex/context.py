@@ -35,7 +35,7 @@ class Context:
         self.security_group = None
         self.cluster_list = []
         self.cluster_stats = []
-        #self.update = Updater(5, self.cluster_list, self.cluster_stats, self.auto_scaling, self.ec2, self.elb)
+        self.updater = None
 
     # Retrieve active clusters created by scalectl in the past
     def build_context(self, storage):
@@ -120,6 +120,7 @@ class Context:
             return 'Daemon error whilst contacting executing create_auto_scaling_group (Code: %s)', \
                    response['ResponseMetadata']['HTTPStatusCode']
         answer += '\nSuccessfully started cluster'
+        self.updater = Updater(1, target, self.mongodbORM, self.userstorage.get_username())
         return answer
 
     def delete_cluster(self):
