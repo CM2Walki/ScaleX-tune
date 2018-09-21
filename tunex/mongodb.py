@@ -31,14 +31,14 @@ class MongoDatabase:
             collection = db['usersPerfData']
         else:
             collection = db.createCollection()
-        userCol = '{"username": "%s", "LatencyDatapoints": [], "ResponseTimeDatapoints": []}' % username
+        userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
         collection.updateOne(userCol, upsert=True)
 
     def add_latency_datapoint(self, username, latency, timestamp):
         self.initdb()
         db = self.mongoclient['dbPerfData']
         collection = db['usersPerfData']
-        userCol = '{ username: "%s" },{$push: {LatencyDatapoints: {$each: [ { "Timestamp": "%s", "Average": "%s" } ],$sort: { "Timestamp": -1 },$slice: 60}}}' % (username, timestamp, latency)
+        userCol = {"username": str(username) }, {"$push": {"LatencyDatapoints": {"$each": [{"Timestamp": timestamp, "Average": latency}], "$sort": {"Timestamp": -1}, "$slice": 60}}}
         collection.update(userCol)
 
     def get_host(self):
