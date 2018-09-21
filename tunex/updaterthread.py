@@ -4,7 +4,6 @@ import threading
 import time
 import datetime
 import socket
-from timeit import default_timer as timer
 
 
 class Updater(object):
@@ -35,11 +34,9 @@ class Updater(object):
                 if now.second > (self.interval+1):
                     if counter > 5:
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        s.settimeout(1)
-                        s_start = timer()
+                        start = time.time()
                         s.connect((str(self.target), 80))
-                        s_stop = timer()
-                        runtime = (1000 * (s_stop - s_start))
+                        runtime = (1000 * (time.time()-start))
                         total = total + runtime
                         s.close()
                     else:
