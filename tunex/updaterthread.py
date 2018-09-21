@@ -32,7 +32,7 @@ class Updater(object):
         while True:
             if not self.stop:
                 now = datetime.datetime.now()
-                if now.second < 59:
+                if now.second != 00:
                     if counter > 5:
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         s.settimeout(1)
