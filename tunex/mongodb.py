@@ -27,8 +27,10 @@ class MongoDatabase:
         self.initdb()
         db = self.mongoclient['dbPerfData']
         collection = None
-        if not "usersPerfData" in db.collection_names():
+        if "usersPerfData" in db.collection_names():
             collection = db['usersPerfData']
+        else:
+            collection.create_collection('usersPerfData')
         userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
         collection.updateOne(userCol, upsert=True)
 
@@ -36,7 +38,7 @@ class MongoDatabase:
         self.initdb()
         db = self.mongoclient['dbPerfData']
         collection = db['usersPerfData']
-        userCol = {"username": str(username) }, {"$push": {"LatencyDatapoints": {"$each": [{"Timestamp": timestamp, "Average": latency}], "$sort": {"Timestamp": -1}, "$slice": 60}}}
+        userCol = {"username": str(username)}, {"$push": {"LatencyDatapoints": {"$each": [{"Timestamp": timestamp, "Average": latency}], "$sort": {"Timestamp": -1}, "$slice": 60}}}
         collection.update(userCol)
 
     def get_host(self):
