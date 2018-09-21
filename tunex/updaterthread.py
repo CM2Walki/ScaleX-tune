@@ -26,20 +26,21 @@ class Updater(object):
 
     def run(self):
         self.mongodb.create_perf_data_db(self.username)
-        counter = 0
+        counter = 1
         total = 0.0
         while True:
             if not self.stop:
                 now = datetime.datetime.now()
                 if now.second < 50:
-                    if counter < 4:
+                    if counter < 5:
                         start = time.time()
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         s.connect((str(self.target), 80))
                         total = total + (time.time()-start)
+                        s.close()
                         counter += 1
                     else:
-                        counter = 0
+                        counter = 1
                         total = 0
                     counter = counter + 1
                 else:
