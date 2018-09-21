@@ -36,14 +36,12 @@ class Updater(object):
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         start = time.time()
                         s.connect((str(self.target), 80))
-                        runtime = (1000 * (time.time()-start))
-                        total = total + runtime
+                        total = total + (1000 * (time.time()-start))
                         s.close()
                     else:
                         counter = 1
                     counter = counter + 1
                 else:
-                    total = total / counter
                     self.mongodb.add_latency_datapoint(self.username, total, int(time.time()))
                     total = 0.0
                     counter = 1
