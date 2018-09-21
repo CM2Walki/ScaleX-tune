@@ -30,7 +30,7 @@ class MongoDatabase:
         if "usersPerfData" in db.collection_names():
             collection = db['usersPerfData']
         else:
-            collection.create_collection('usersPerfData')
+            collection = db.create_collection('usersPerfData')
         userCol = {"username": str(username), "LatencyDatapoints": [], "ResponseTimeDatapoints": []}
         collection.updateOne(userCol, upsert=True)
 
