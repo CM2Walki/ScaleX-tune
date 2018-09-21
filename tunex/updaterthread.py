@@ -32,24 +32,24 @@ class Updater(object):
         while True:
             if not self.stop:
                 now = datetime.datetime.now()
-                if now.second != 00:
+                if now.second > (self.interval+1):
                     if counter > 5:
                         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         s.settimeout(1)
                         s_start = timer()
                         s.connect((str(self.target), 80))
                         s_stop = timer()
-                        runtime = "%.2f" % (1000 * (s_stop - s_start))
-                        total = total + float(runtime)
+                        runtime = (1000 * (s_stop - s_start))
+                        total = total + runtime
                         s.close()
                     else:
                         counter = 1
-                        total = 0
+                        total = 0.0
                     counter = counter + 1
                 else:
                     total = total / counter
                     self.mongodb.add_latency_datapoint(self.username, total, int(time.time()))
-                    total = 0
+                    total = 0.0
                     counter = 1
                 time.sleep(self.interval)
             else:
