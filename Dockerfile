@@ -1,4 +1,4 @@
-FROM 2-alpine
+FROM python/2-alpine
 
 RUN set -x \
         && apk add --no-cache --virtual .build-deps \
