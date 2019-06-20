@@ -11,6 +11,7 @@ RUN set -x \
                 gcc \
                 python2-tkinter \
         && pip install --upgrade pip \
+        && ln -s /lib/libc.musl-x86_64.so.1 ldd \
         && ln -s /lib /lib64 \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
