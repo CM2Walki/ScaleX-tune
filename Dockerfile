@@ -6,6 +6,7 @@ RUN set -x \
                 git \
                 make \
                 gcc \
+                musl-dev \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
         && make init clean-build build \
@@ -14,6 +15,7 @@ RUN set -x \
                 git \
                 make \
                 gcc \
+                musl-dev \
         && rm -rf scalexctl /var/cache/apk/*
 
 EXPOSE 20000
