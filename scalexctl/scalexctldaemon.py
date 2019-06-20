@@ -51,7 +51,7 @@ class V1View(FlaskView):
         return commandList.cluster_remove()
 
 
-class ScaleCtlDaemon(Daemon):
+class ScaleXCtlDaemon(Daemon):
     app = None
 
     def __init__(self, pidfile, name, host, port):

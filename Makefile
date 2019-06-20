@@ -6,12 +6,12 @@ update:
 	git reset --hard origin/master
 
 clean-build:
-	rm -rf tunex/build/
-	rm -rf tunex/dist/
-	rm -f /var/log/scalectl.log
-	find tunex/ -name '*.pyc' -exec rm --force {} +
-	find tunex/ -name '*.pyo' -exec rm --force {} +
+	rm -rf scalexctl/build/
+	rm -rf scalexctl/dist/
+	rm -f /var/log/scalexctl.log
+	find scalexctl/ -name '*.pyc' -exec rm --force {} +
+	find scalexctl/ -name '*.pyo' -exec rm --force {} +
 
 build:
-	cd /usr/src/ScaleX-tune/tunex/ && pyinstaller --onefile scalectl.py
-	mv /usr/src/ScaleX-tune/tunex/dist/scalectl /usr/bin/scalectl
+	cd /usr/src/ScaleX-tune/scalexctl/ && pyinstaller --onefile scalexctl.py
+	mv /usr/src/ScaleX-tune/scalexctl/dist/scalexctl /usr/bin/scalexctl

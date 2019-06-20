@@ -6,7 +6,7 @@ import sys
 import base64
 
 
-class ScaleCtlClient:
+class ScaleXCtlClient:
     def __init__(self, alias, port, api):
         self.alias = alias
         self.port = port

@@ -79,7 +79,3 @@ class Updater(object):
             else:
                 break
         return
-
-    # db.inventory.insert({"username": "Walki", "LatencyDatapoints": [], "ResponseTimeDatapoints": []})
-    # db.inventory.findOne({username: "Walki"})
-    # db.inventory.update({ username: "Walki" },{$push: {LatencyDatapoints: {$each: [ { "Timestamp": "test2", "Average": 8 } ],$sort: { "Timestamp": -1 },$slice: 60}}})

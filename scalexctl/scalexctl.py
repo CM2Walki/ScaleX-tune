@@ -1,38 +1,38 @@
 #!/usr/bin/env python
 
 import sys
-from scalectldaemon import ScaleCtlDaemon
-from scalectlclient import ScaleCtlClient
+from scalexctldaemon import ScaleXCtlDaemon
+from scalexctlclient import ScaleXCtlClient
 
 
 if __name__ == "__main__":
     # Setup variables
-    alias = 'scalectl'
+    alias = 'scalexctl'
     api = 'api/v1/'
     host = 'localhost'
     port = 8085
 
-    # Setup scalectl client
-    scalectlclient = ScaleCtlClient(alias, port, api)
-    scalectlclient.setup_hostfile()
+    # Setup scalexctl client
+    scalexctlclient = ScaleXCtlClient(alias, port, api)
+    scalexctlclient.setup_hostfile()
 
-    # Setup scalectl daemon (if not already running)
-    scalectldaemon = ScaleCtlDaemon('/tmp/scalectl-daemon.pid', 'ScaleAPI', host, port)
+    # Setup scalexctl daemon (if not already running)
+    scalexctldaemon = ScaleXCtlDaemon('/tmp/scalexctl-daemon.pid', 'ScaleAPI', host, port)
 
     # Argument handling (client)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
-            scalectldaemon.start()
+            scalexctldaemon.start()
         elif 'stop' == sys.argv[1]:
-            scalectldaemon.stop()
+            scalexctldaemon.stop()
         elif 'restart' == sys.argv[1]:
-            scalectldaemon.restart()
+            scalexctldaemon.restart()
         elif 'setup' == sys.argv[1]:
             print '"%s %s" requires exactly 1 argument\n' % (sys.argv[0], sys.argv[1])
             print 'Usage: %s %s USERNAME\n' % (sys.argv[0], sys.argv[1])
             print 'Fetch the AWS data from the ScaleX database for USERNAME\n'
             print 'Options:'
-            print '  --force\t\tReinitialize scalectl with provided user'
+            print '  --force\t\tReinitialize scalexctl with provided user'
         elif 'cluster' == sys.argv[1]:
             print 'Usage: %s %s COMMAND\n' % (sys.argv[0], sys.argv[1])
             print 'Commands: '
@@ -51,26 +51,26 @@ if __name__ == "__main__":
                 print '\t\t\t\t\t\tTIMESTART TIMEEND TIMESTEP TARGET FUNCTION CLUSTERSIZE INSTANCETYPE'
                 print 'Creates a new autoscaling benchmark cluster with the provided parameters on AWS\n'
             elif 'remove' == sys.argv[2]:
-                response = scalectlclient.cluster_remove()
+                response = scalexctlclient.cluster_remove()
                 print response
             else:
                 print "Unknown command"
                 sys.exit(2)
         elif 'setup' == sys.argv[1]:
-            response = scalectlclient.get_active_user()
+            response = scalexctlclient.get_active_user()
             if response == "False":
                 print 'No active user detected! Setting up %s' % sys.argv[2]
-                response = scalectlclient.setup_user(sys.argv[2])
+                response = scalexctlclient.setup_user(sys.argv[2])
                 print response
             else:
-                print 'scalectl already setup for user %s\n' % response
+                print 'scalexctl already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
                 sys.exit(2)
         sys.exit(0)
     elif len(sys.argv) == 4:
         if 'setup' == sys.argv[1] and '--force' == sys.argv[2]:
             print 'Setting up %s' % sys.argv[3]
-            response = scalectlclient.setup_user(sys.argv[3])
+            response = scalexctlclient.setup_user(sys.argv[3])
             print response
         sys.exit(0)
     elif len(sys.argv) > 4:
@@ -78,14 +78,14 @@ if __name__ == "__main__":
             if 'run' == sys.argv[2]:
                 print 'Setting up %s' % sys.argv[1]
                 print 'Timestart = %s; Timeend = %s; Timestep = %s; Target = %s; Function = %s; Size = %s; Instancetype: %s\n' % (sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
-                response = scalectlclient.cluster_run(sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
+                response = scalexctlclient.cluster_run(sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
                 print response
     else:
         print 'Usage: %s COMMAND\n' % sys.argv[0]
         print 'Commands: '
-        print '  start\t\t\tStarts the scalectl-daemon'
-        print '  stop\t\t\tStops the scalectl-daemon'
-        print '  restart\t\tRestarts the scalectl-daemon'
+        print '  start\t\t\tStarts the scalexctl-daemon'
+        print '  stop\t\t\tStops the scalexctl-daemon'
+        print '  restart\t\tRestarts the scalexctl-daemon'
         print '  setup\t\t\tFetches AWS information from the ScaleX database'
         print '  cluster\t\tControls and Creates AWS autoscaling clusters'
         sys.exit(2)

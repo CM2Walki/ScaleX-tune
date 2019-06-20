@@ -14,8 +14,8 @@ ssh $REMOTE << EOF
   if ! docker start '$SCALEXCONTAINERNAME'; then docker run -d -p '$SCALEXPORT':8080 --name='$SCALEXCONTAINERNAME' walki/apmt; fi
   docker exec '$SCALEXCONTAINERNAME' bash -c 'if cd /usr/src/ScaleX-tune/.git; then cd /usr/src/ScaleX-tune/ && git fetch --all && git reset --hard origin/master; else cd /usr/src/ && git clone https://github.com/CM2Walki/ScaleX-tune; fi'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'cd /usr/src/ScaleX-tune && make init clean-build build'
-  docker exec '$SCALEXCONTAINERNAME' bash -c 'scalectl stop'
-  docker exec '$SCALEXCONTAINERNAME' bash -c 'rm /tmp/scalectl-daemon.pid > /dev/null 2>&1'
-  docker exec '$SCALEXCONTAINERNAME' bash -c 'scalectl start'
+  docker exec '$SCALEXCONTAINERNAME' bash -c 'scalexctl stop'
+  docker exec '$SCALEXCONTAINERNAME' bash -c 'rm /tmp/scalexctl-daemon.pid > /dev/null 2>&1'
+  docker exec '$SCALEXCONTAINERNAME' bash -c 'scalexctl start'
   printf 'Deployment script done.\n'
 EOF
