@@ -8,6 +8,8 @@ RUN set -x \
                 python-pip \
                 python-setuptools \
                 python-dev \
+                python-all-dev \
+                libevent-dev \
         && pip install --upgrade pip \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
