@@ -9,7 +9,7 @@ RUN set -x \
                 musl-dev \
                 libc-dev \
                 gcc \
-        && pip install --upgrade pip
+        && pip install --upgrade pip \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
         && make init clean-build build \
