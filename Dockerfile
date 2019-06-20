@@ -5,6 +5,7 @@ RUN set -x \
                 git \
                 make \
         && git clone https://github.com/CM2Walki/scalexctl \
+        && cd /root/scalexctl \
         && make init clean-build build \
         && rm -rf scalexctl \
         && apk del \
