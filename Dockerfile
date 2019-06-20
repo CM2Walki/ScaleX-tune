@@ -2,7 +2,7 @@ FROM python:2-alpine
 
 RUN set -x \
         && cd /root \
-        && apk --update --no-cache --virtual add  .build-deps \
+        && apk --update --no-cache --virtual .build-deps add \
                 git \
                 make \
                 zlib-dev \
