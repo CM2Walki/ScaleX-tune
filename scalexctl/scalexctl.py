@@ -10,14 +10,14 @@ if __name__ == "__main__":
     alias = 'scalexctl'
     api = 'api/v1/'
     host = 'localhost'
-    port = 8085
+    port = 20000
 
     # Setup scalexctl client
     scalexctlclient = ScaleXCtlClient(alias, port, api)
     scalexctlclient.setup_hostfile()
 
     # Setup scalexctl daemon (if not already running)
-    scalexctldaemon = ScaleXCtlDaemon('/tmp/scalexctl-daemon.pid', 'ScaleAPI', host, port)
+    scalexctldaemon = ScaleXCtlDaemon('/tmp/scalexctl-daemon.pid', 'ScaleXAPI', host, port)
 
     # Argument handling (client)
     if len(sys.argv) == 2:
