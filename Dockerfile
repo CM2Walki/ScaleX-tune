@@ -1,7 +1,7 @@
 FROM python:2-alpine
 
 RUN set -x \
-        && cd /root/scalexctl \
+        && cd /root \
         && apk add --no-cache --virtual .build-deps \
                 git \
                 make \
