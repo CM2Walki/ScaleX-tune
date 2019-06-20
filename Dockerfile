@@ -2,13 +2,14 @@ FROM python:2-alpine
 
 RUN set -x \
         && cd /root \
-        && apk add --no-cache --virtual .build-deps \
+        && apk --update --no-cache --virtual add  .build-deps \
                 git \
                 make \
                 zlib-dev \
                 musl-dev \
                 libc-dev \
                 gcc \
+                python2-tkinter \
         && pip install --upgrade pip \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
@@ -21,6 +22,7 @@ RUN set -x \
                 musl-dev \
                 libc-dev \
                 gcc \
+                python2-tkinter \
         && rm -rf scalexctl /var/cache/apk/*
 
 EXPOSE 20000
