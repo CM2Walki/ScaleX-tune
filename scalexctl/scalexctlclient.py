@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 
-import requests
-import sys
-import base64
+import requests, sys, base64, os
 
 
 class ScaleXCtlClient:
@@ -16,10 +14,10 @@ class ScaleXCtlClient:
     def setup_hostfile(self):
         with open("/etc/hosts", "r+") as f:
             for line in f:
-                if '127.0.0.1\tscalectl\n' in line:
+                if '%s\tscalexctl\n' % os.environ['DAEMON_HOST'] in line:
                     break
             else:
-                f.write('127.0.0.1\tscalectl\n')
+                f.write('%s\tscalexctl\n' % os.environ['DAEMON_HOST'])
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)

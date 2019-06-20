@@ -50,20 +50,21 @@ class Daemon:
     def delpid(self):
         os.remove(self.pidfile)
 
-    def start(self):
-        try:
-            pf = file(self.pidfile, 'r')
-            pid = int(pf.read().strip())
-            pf.close()
-        except IOError:
-            pid = None
+    def start(self, attach=False):
+        if not attach:
+            try:
+                pf = file(self.pidfile, 'r')
+                pid = int(pf.read().strip())
+                pf.close()
+            except IOError:
+                pid = None
 
-        if pid:
-            message = "pidfile %s already exist. Daemon already running?\n"
-            sys.stderr.write(message % self.pidfile)
-            sys.exit(1)
+            if pid:
+                message = "pidfile %s already exist. Daemon already running?\n"
+                sys.stderr.write(message % self.pidfile)
+                sys.exit(1)
 
-        self.daemonize()
+            self.daemonize()
         self.run()
 
     def stop(self):

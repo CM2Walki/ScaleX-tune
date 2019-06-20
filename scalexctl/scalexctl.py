@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import sys, os
 from scalexctldaemon import ScaleXCtlDaemon
 from scalexctlclient import ScaleXCtlClient
 
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # Setup variables
     alias = 'scalexctl'
     api = 'api/v1/'
-    host = 'localhost'
+    host = os.environ['DAEMON_HOST']
     port = 20000
 
     # Setup scalexctl client
@@ -66,6 +66,10 @@ if __name__ == "__main__":
                 print 'scalexctl already setup for user %s\n' % response
                 print 'Use --force to overwrite!'
                 sys.exit(2)
+        elif 'start' == sys.argv[1]:
+            if '--attach' == sys.argv[2]:
+                scalexctldaemon.start(True)
+                sys.exit(0)
         sys.exit(0)
     elif len(sys.argv) == 4:
         if 'setup' == sys.argv[1] and '--force' == sys.argv[2]:
