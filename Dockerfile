@@ -5,6 +5,7 @@ RUN set -x \
         && apk add --no-cache --virtual .build-deps \
                 git \
                 make \
+                gcc \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
         && make init clean-build build \
@@ -12,6 +13,7 @@ RUN set -x \
         && apk del \
                 git \
                 make \
+                gcc \
         && rm -rf scalexctl /var/cache/apk/*
 
 EXPOSE 20000
