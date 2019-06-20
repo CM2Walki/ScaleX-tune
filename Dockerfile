@@ -5,6 +5,7 @@ RUN set -x \
         && apt-get install -y --no-install-recommends --no-install-suggests \
                 git \
                 make \
+                python-pip \
         && pip install --upgrade pip \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
