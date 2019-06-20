@@ -8,6 +8,7 @@ RUN set -x \
                 python-pip \
                 python-setuptools \
                 python-dev \
+                python-ctypes \
                 python-all-dev \
                 libevent-dev \
         && pip install --upgrade pip \
