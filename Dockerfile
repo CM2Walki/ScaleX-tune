@@ -12,7 +12,9 @@ RUN set -x \
                 python-ctypes \
                 python-all-dev \
                 libevent-dev \
-        && pip install --upgrade pip \
+        && pip install --upgrade \
+                pip \
+                pyinstaller \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl/scalexctl \
