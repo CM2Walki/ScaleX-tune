@@ -1,4 +1,4 @@
-FROM 2.7.16-alpine3.9
+FROM 2-alpine
 
 RUN set -x \
         && apk add --no-cache --virtual .build-deps \
