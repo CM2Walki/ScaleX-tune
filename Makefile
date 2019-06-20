@@ -13,5 +13,5 @@ clean-build:
 	find scalexctl/ -name '*.pyo' -exec rm --force {} +
 
 build:
-	cd /usr/src/ScaleX-tune/scalexctl/ && pyinstaller --onefile scalexctl.py
-	mv /usr/src/ScaleX-tune/scalexctl/dist/scalexctl /usr/bin/scalexctl
+	cd /usr/src/scalexctl/scalexctl/ && pyinstaller --onefile scalexctl.py
+	mv /usr/src/scalexctl/scalexctl/dist/scalexctl /usr/bin/scalexctl

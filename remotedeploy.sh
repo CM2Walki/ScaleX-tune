@@ -1,5 +1,5 @@
 #!/bin/bash
-# Add the ScaleX module to an existing container
+# Add the scalexctl module to an existing container
 # Creates a ScaleX container if it doesn't exist already
 if [ -z $1 ] || [ -z $2 ] || [ -z $3 ]; then
   printf 'Not enough arguments provided!\n\n'
@@ -12,8 +12,8 @@ SCALEXPORT=$2
 SCALEXCONTAINERNAME=$3
 ssh $REMOTE << EOF
   if ! docker start '$SCALEXCONTAINERNAME'; then docker run -d -p '$SCALEXPORT':8080 --name='$SCALEXCONTAINERNAME' walki/apmt; fi
-  docker exec '$SCALEXCONTAINERNAME' bash -c 'if cd /usr/src/ScaleX-tune/.git; then cd /usr/src/ScaleX-tune/ && git fetch --all && git reset --hard origin/master; else cd /usr/src/ && git clone https://github.com/CM2Walki/ScaleX-tune; fi'
-  docker exec '$SCALEXCONTAINERNAME' bash -c 'cd /usr/src/ScaleX-tune && make init clean-build build'
+  docker exec '$SCALEXCONTAINERNAME' bash -c 'if cd /usr/src/scalexctl/.git; then cd /usr/src/scalexctl/ && git fetch --all && git reset --hard origin/master; else cd /usr/src/ && git clone https://github.com/CM2Walki/scalexctl; fi'
+  docker exec '$SCALEXCONTAINERNAME' bash -c 'cd /usr/src/scalexctl && make init clean-build build'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'scalexctl stop'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'rm /tmp/scalexctl-daemon.pid > /dev/null 2>&1'
   docker exec '$SCALEXCONTAINERNAME' bash -c 'scalexctl start'
