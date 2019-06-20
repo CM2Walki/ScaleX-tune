@@ -6,6 +6,7 @@ RUN set -x \
                 git \
                 make \
                 python-pip \
+                python-setuptools \
         && pip install --upgrade pip \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
