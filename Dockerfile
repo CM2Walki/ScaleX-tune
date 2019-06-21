@@ -17,7 +17,7 @@ RUN set -x \
         && cd /root/scalexctl \
         && pip install -r requirements.txt \
         && make init clean-build build \
-        && pip uninstall -r requirements.txt \
+        && pip uninstall -r requirements.txt -y \
         && rm -rf scalexctl \
         && apt-get remove --purge -y \
                 git \
