@@ -13,16 +13,10 @@ RUN set -x \
                 python-all-dev \
                 libevent-dev \
                 python-wheel \
-        && pip install --upgrade --force \
-                pip \
-                setuptools \
-                wheel \
-                pyinstaller \
-                greenlet \
-                gevent \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl/scalexctl \
+        && pip install -r requirements.txt \
         && cd /root/scalexctl \
         && make init clean-build build \
         && rm -rf scalexctl \
