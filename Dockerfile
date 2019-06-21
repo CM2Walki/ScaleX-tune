@@ -18,10 +18,20 @@ RUN set -x \
         && pip install -r requirements.txt \
         && make init clean-build build \
         && rm -rf scalexctl \
+        && apt-get remove --purge \
+                git \
+                make \
+                python \
+                python-dev \
+                python-pip \
+                python-setuptools \
+                python-wheel \
+                build-essential \
         && apt-get clean autoclean \
         && apt-get autoremove -y \
         && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 EXPOSE 20000
 
-CMD [ "scalexctl", "start", "--attach"]
+ENTRYPOINT rm /tmp/scalexctl-daemon.pid > /dev/null 2>&1 \
+                && scalexctl start --attach
