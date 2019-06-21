@@ -15,6 +15,8 @@ RUN set -x \
         && pip install --upgrade \
                 pip \
                 pyinstaller \
+                greenlet \
+                gevent \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl/scalexctl \
