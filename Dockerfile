@@ -18,7 +18,7 @@ RUN set -x \
         && pip install -r requirements.txt \
         && make init clean-build build \
         && rm -rf scalexctl \
-        && apt-get remove --purge \
+        && apt-get remove --purge -y \
                 git \
                 make \
                 python \
