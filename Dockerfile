@@ -14,6 +14,7 @@ RUN set -x \
                 libevent-dev \
         && pip install --upgrade \
                 pip \
+                wheel \
                 pyinstaller \
                 greenlet \
                 gevent \
