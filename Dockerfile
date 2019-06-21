@@ -12,6 +12,7 @@ RUN set -x \
                 python-ctypes \
                 python-all-dev \
                 libevent-dev \
+                python-wheel \
         && pip install --upgrade --force \
                 pip \
                 setuptools \
