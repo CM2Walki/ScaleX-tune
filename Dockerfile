@@ -9,6 +9,7 @@ RUN set -x \
                 python-dev \
                 python-pip \
                 python-setuptools \
+                python-wheel \
                 build-essential \
                 default-libmysqlclient-dev \
         && cd /root \
