@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # Setup variables
     alias = 'scalexctl'
     api = 'api/v1/'
-    host = os.environ['DAEMON_HOST']
+    host = 'localhost'
     port = 20000
 
     # Setup scalexctl client
