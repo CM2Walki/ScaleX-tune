@@ -12,8 +12,9 @@ RUN set -x \
                 python-ctypes \
                 python-all-dev \
                 libevent-dev \
-        && pip install --upgrade \
+        && pip install --upgrade --force \
                 pip \
+                setuptools \
                 wheel \
                 pyinstaller \
                 greenlet \
