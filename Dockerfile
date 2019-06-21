@@ -18,6 +18,7 @@ RUN set -x \
         && pip install -r requirements.txt \
         && make init clean-build build \
         && rm -rf scalexctl \
+        && pip uninstall -r requirements.txt \
         && apt-get remove --purge -y \
                 git \
                 make \
@@ -33,5 +34,5 @@ RUN set -x \
 
 EXPOSE 20000
 
-ENTRYPOINT rm /tmp/scalexctl-daemon.pid > /dev/null 2>&1 \
+ENTRYPOINT rm -f /tmp/scalexctl-daemon.pid \
                 && scalexctl start --attach
