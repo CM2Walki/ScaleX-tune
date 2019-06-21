@@ -10,7 +10,7 @@ RUN set -x \
                 python-pip \
                 python-setuptools \
                 build-essential \
-                libmysqlclient-dev \
+                default-libmysqlclient-dev \
         && cd /root \
         && git clone https://github.com/CM2Walki/scalexctl \
         && cd /root/scalexctl \
