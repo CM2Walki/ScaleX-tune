@@ -14,10 +14,10 @@ class ScaleXCtlClient:
     def setup_hostfile(self):
         with open("/etc/hosts", "r+") as f:
             for line in f:
-                if '%s\tscalexctl\n' % os.environ['DAEMON_HOST'] in line:
+                if '127.0.0.1\tscalexctl\n' in line:
                     break
             else:
-                f.write('%s\tscalexctl\n' % os.environ['DAEMON_HOST'])
+                f.write('127.0.0.1\tscalexctl\n')
 
     def build_request(self, query):
         return '%s%s' % (self.url, query)
