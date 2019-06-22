@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 
-import gevent.monkey
-import base64
+import gevent.monkey, base64, os
 from gevent.pywsgi import WSGIServer
 from daemon import Daemon
 from mongodb import MongoDatabase
@@ -14,7 +13,7 @@ from flask_classy import FlaskView, route
 
 gevent.monkey.patch_all()
 
-mongodbORM = MongoDatabase('localhost', 27017)
+mongodbORM = MongoDatabase(os.environ['MONGODB_HOST'], 27017)
 userStorage = Storage()
 commandList = DaemonCommands(mongodbORM, userStorage)
 
