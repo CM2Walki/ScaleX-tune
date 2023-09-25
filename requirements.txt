@@ -4,6 +4,6 @@ pyinstaller
 Flask
 flask-classy
 greenlet
-gevent==1.2.2
+gevent==23.9.1
 Requests
 pyping
